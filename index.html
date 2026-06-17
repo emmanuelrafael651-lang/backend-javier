@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Javier Estrada | Luxury Real Estate - Ciudad Juárez</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+    <style>
+        /* ========== ESTILOS ORIGINALES (NO SE HA MODIFICADO NADA DEL CARRUSEL NI CURSOR) ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-deep: #F5F2ED;
+            --bg-primary: #FAF8F4;
+            --bg-secondary: #EFEBE5;
+            --bg-card: #FFFFFF;
+            --gold: #C6A15B;
+            --gold-light: #D9BA7A;
+            --gold-dark: #A8843E;
+            --text-primary: #2C2A28;
+            --text-secondary: #5C5955;
+            --text-muted: #8A8680;
+            --border-subtle: rgba(198, 161, 91, 0.2);
+            --border-gold: rgba(198, 161, 91, 0.35);
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            --shadow-elevated: 0 30px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 1024px) {
+            body { cursor: none; }
+            .custom-cursor {
+                width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+                position: fixed; pointer-events: none; z-index: 99999;
+                transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
+            }
+            .custom-cursor-trail {
+                width: 40px; height: 40px; border: 1.5px solid rgba(198, 161, 91, 0.4);
+                border-radius: 50%; position: fixed; pointer-events: none; z-index: 99998;
+                transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
+            }
+            .custom-cursor.hover { width: 40px; height: 40px; background: rgba(198, 161, 91, 0.15); }
+            .custom-cursor-trail.hover { width: 60px; height: 60px; }
+        }
+
+        .luxury-loader { position: fixed; inset: 0; background: var(--bg-primary); z-index: 999999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px; }
+        .loader-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; letter-spacing: 6px; color: var(--text-primary); }
+        .loader-logo span { color: var(--gold); }
+        .loader-progress { width: 280px; height: 2px; background: rgba(198,161,91,0.2); border-radius: 10px; overflow: hidden; }
+        .loader-progress-bar { width: 0%; height: 100%; background: var(--gold); transition: width 0.3s; }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 1280px; z-index: 1000; padding: 12px 28px;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px);
+            border-radius: 60px; border: 1px solid rgba(198, 161, 91, 0.15); box-shadow: var(--shadow-sm);
+        }
+        .navbar.glass { background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .navbar.glass .navbar-logo,
+        .navbar.glass .nav-links a { color: white !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .navbar.glass .nav-links a::after { background: white; }
+        .navbar.scrolled { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(20px); top: 12px; border-color: rgba(198,161,91,0.25); }
+        .navbar.scrolled .navbar-logo,
+        .navbar.scrolled .nav-links a { color: var(--text-primary) !important; text-shadow: none; }
+        .navbar.scrolled .nav-links a::after { background: var(--gold); }
+        
+        .navbar-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; text-decoration: none; color: var(--text-primary); transition: color 0.3s; display: flex; align-items: center; gap: 8px; }
+        .navbar-logo img { height: 32px; width: auto; border-radius: 8px; }
+        .navbar-logo span { color: var(--gold); }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
+            transition: all 0.3s; position: relative; text-transform: uppercase; color: var(--text-primary);
+        }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: 0.3s; }
+
+        @media (max-width: 768px) {
+            .navbar { width: calc(100% - 20px); padding: 10px 20px; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 70%; max-width: 280px;
+                height: 100vh; background: rgba(28, 28, 30, 0.98); backdrop-filter: blur(40px);
+                flex-direction: column; justify-content: center; gap: 30px; transition: right 0.4s;
+                border-left: 1px solid rgba(198,161,91,0.3); z-index: 999; padding-top: 80px;
+            }
+            .nav-links a { color: #fff !important; font-size: 16px; }
+            .nav-links a::after { background: var(--gold); }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
+            .nav-links .close-menu { display: block; position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--gold); font-size: 28px; cursor: pointer; }
+            .custom-cursor, .custom-cursor-trail { display: none; }
+        }
+
+        /* Hero */
+        .hero-section { position: relative; height: 100vh; min-height: 700px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--bg-deep); }
+        .hero-image-container { position: absolute; inset: 0; z-index: 0; }
+        .hero-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.1)); z-index: 1; }
+        .hero-content { position: relative; z-index: 3; text-align: center; max-width: 650px; width: 90%; padding: 0 20px; opacity: 0; transform: translateY(30px); display: flex; flex-direction: column; align-items: center; gap: 28px; }
+        .hero-cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .btn-gold-hero { background: rgba(198, 161, 91, 0.95); backdrop-filter: blur(8px); color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 16px 38px; cursor: pointer; transition: all 0.3s; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-outline-hero { background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); color: white; font-weight: 600; border-radius: 50px; padding: 14px 36px; cursor: pointer; transition: all 0.3s; font-size: 15px; }
+        .btn-outline-hero:hover, .btn-gold-hero:hover { transform: translateY(-3px); background: var(--gold); border-color: var(--gold); }
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); opacity: 0.6; } 50% { transform: translateX(-50%) translateY(-8px); opacity: 1; } }
+        .scroll-indicator span { font-size: 10px; letter-spacing: 2px; color: white; text-transform: uppercase; }
+        .scroll-indicator .line { width: 1px; height: 40px; background: linear-gradient(to bottom, white, transparent); }
+
+        /* Secciones */
+        .section-container { max-width: 1280px; margin: 0 auto; padding: 80px 40px; }
+        .section-header { text-align: center; margin-bottom: 60px; opacity: 0; transform: translateY(30px); }
+        .section-label { font-size: 11px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
+        .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 500; margin-bottom: 16px; font-family: 'Playfair Display', serif; color: var(--text-primary); }
+        .text-gold { color: var(--gold); }
+
+        /* Carrusel fraccionamientos */
+        .developments-section { padding: 60px 0; background: linear-gradient(135deg, var(--bg-primary), var(--bg-deep)); }
+        .developments-container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .developments-swiper { width: 100%; padding: 20px 0 40px; }
+        .development-card { background: var(--bg-card); border-radius: 24px; overflow: hidden; box-shadow: var(--shadow-sm); transition: all 0.4s; margin: 0 15px; border: 1px solid var(--border-subtle); }
+        .development-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--border-gold); }
+        .development-image { height: 220px; overflow: hidden; }
+        .development-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .development-card:hover .development-image img { transform: scale(1.05); }
+        .development-content { padding: 24px; text-align: center; }
+        .development-content h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px; color: var(--text-primary); }
+        .development-location { color: var(--gold); font-size: 0.8rem; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .development-price { font-size: 1rem; font-weight: 500; color: var(--gold-dark); margin-bottom: 16px; }
+        .development-features { display: flex; justify-content: center; gap: 16px; margin-bottom: 20px; font-size: 0.75rem; color: var(--text-muted); }
+        .btn-dev { background: rgba(198,161,91,0.12); color: var(--gold-dark); border: 1px solid rgba(198,161,91,0.3); padding: 10px 24px; border-radius: 40px; font-weight: 500; cursor: pointer; transition: all 0.3s; width: 100%; }
+        .btn-dev:hover { background: var(--gold); color: white; border-color: var(--gold); }
+        .swiper-pagination-bullet-active { background: var(--gold) !important; }
+        .swiper-button-next, .swiper-button-prev { color: var(--gold) !important; background: rgba(255,255,255,0.8); width: 38px; height: 38px; border-radius: 50%; }
+
+        /* Banners del catálogo */
+        .dev-banner { position: relative; height: 320px; border-radius: 24px; overflow: hidden; margin-bottom: 30px; box-shadow: var(--shadow-md); }
+        .dev-banner img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+        .dev-banner-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px; color: white; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+        .dev-banner-content h3 { font-family: 'Playfair Display', serif; font-size: 2rem; }
+        .dev-price-badge { background: var(--gold); color: white; padding: 12px 24px; border-radius: 40px; font-size: 1.3rem; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .dev-properties-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; margin-bottom: 60px; }
+
+        /* Catálogo de propiedades */
+        .property-card { background: var(--bg-card); border-radius: 28px; overflow: hidden; transition: all 0.5s; cursor: pointer; border: 1px solid var(--border-subtle); opacity: 0; transform: translateY(40px); box-shadow: var(--shadow-sm); }
+        .property-card:hover { transform: translateY(-10px); border-color: var(--border-gold); box-shadow: var(--shadow-elevated); }
+        .property-card-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            background: var(--bg-secondary);
+            display: block;
+            transition: transform 0.8s;
+            max-height: 500px;
+        }
+        @media (max-width: 768px) {
+            .property-card-image { max-height: 350px; }
+        }
+        .property-card:hover .property-card-image { transform: scale(1.03); }
+        .property-card-content { padding: 24px; }
+        @media (max-width: 480px) {
+            .property-card-content { padding: 16px; }
+            .property-price { font-size: 1.2rem !important; }
+            .property-card-content h3 { font-size: 1rem !important; }
+        }
+        .property-price { font-size: 1.5rem; font-weight: 700; color: var(--gold-dark); margin-bottom: 8px; }
+        .property-card-content h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+        .property-specs { display: flex; gap: 16px; margin: 12px 0; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; }
+        .property-buttons { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .property-buttons button { flex: 1; padding: 10px; border-radius: 40px; font-weight: 500; cursor: pointer; font-size: 13px; transition: all 0.2s; border: none; }
+        .btn-wa { background: #25D366; color: white; }
+        .btn-details { background: var(--gold); color: white; }
+        .btn-details:hover, .btn-wa:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .btn-outline-solid { background: var(--gold); color: white; border: none; border-radius: 50px; padding: 14px 36px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 14px; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-outline-solid:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+        /* ========== MODAL DE PROPIEDAD (NO SE HA TOCADO) ========== */
+        .lightbox-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s; }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .modal-container { background: var(--bg-card); border-radius: 24px; max-width: 1100px; width: 95%; max-height: 90vh; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        @media (min-width: 769px) { .modal-container { border-radius: 48px; } }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 24px; cursor: pointer; z-index: 20; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .modal-close:hover { background: rgba(0,0,0,0.9); transform: scale(1.05); }
+        .modal-gallery { flex-shrink: 0; width: 100%; position: relative; }
+        @media (min-width: 769px) { .modal-gallery { height: 50vh; min-height: 400px; } }
+        @media (max-width: 768px) { .modal-gallery { height: 40vh; min-height: 250px; } }
+        .modal-details { flex: 1; overflow-y: auto; padding: 28px 32px; -webkit-overflow-scrolling: touch; }
+        @media (max-width: 768px) { .modal-details { padding: 24px 20px; } }
+
+        /* Flechas del Swiper (no modificadas) */
+        .propertySwiperModal .swiper-button-next,
+        .propertySwiperModal .swiper-button-prev {
+            display: flex !important; align-items: center; justify-content: center;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(198, 161, 91, 0.85); backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2) inset;
+            color: #fff; transition: all 0.3s ease; right: 16px; left: auto;
+        }
+        .propertySwiperModal .swiper-button-prev { right: auto; left: 16px; }
+        .propertySwiperModal .swiper-button-next::after,
+        .propertySwiperModal .swiper-button-prev::after { font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        @media (min-width: 1024px) {
+            .propertySwiperModal .swiper-button-next:hover,
+            .propertySwiperModal .swiper-button-prev:hover { background: rgba(198, 161, 91, 0.95); border-color: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.5); transform: scale(1.08); }
+        }
+        @media (max-width: 768px) {
+            .propertySwiperModal .swiper-button-next,
+            .propertySwiperModal .swiper-button-prev { width: 44px; height: 44px; }
+        }
+
+        /* Detalles premium (no modificado) */
+        .modal-property-name { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 8px; color: var(--text-primary); }
+        .modal-property-price { font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 16px 0 12px; line-height: 1.2; }
+        .modal-property-desc { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; }
+        .modal-specs-grid { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; }
+        .modal-spec-card { background: linear-gradient(145deg, rgba(198,161,91,0.08), rgba(198,161,91,0.02)); border: 1px solid rgba(198,161,91,0.25); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; min-width: 140px; flex: 1; transition: all 0.3s; }
+        .modal-spec-card i { font-size: 1.5rem; color: var(--gold); }
+        .modal-spec-card span { font-weight: 600; color: var(--text-primary); }
+        .modal-amenities-title { font-weight: 600; color: var(--text-primary); margin-bottom: 10px; font-size: 1rem; letter-spacing: 0.02em; }
+        .modal-amenities-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+        .modal-amenity-badge { background: rgba(198,161,91,0.12); border: 1px solid rgba(198,161,91,0.3); border-radius: 40px; padding: 8px 18px; font-size: 0.85rem; color: var(--gold-dark); font-weight: 500; }
+        @media (max-width: 768px) {
+            .modal-property-name { font-size: 1.6rem; }
+            .modal-property-price { font-size: 2.2rem; }
+            .modal-spec-card { min-width: 120px; padding: 12px 14px; }
+        }
+
+        /* ========== NUEVO: FORMULARIO DE CONTACTO PREMIUM ========== */
+        .contact-modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 4000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .contact-modal-overlay.active { opacity: 1; visibility: visible; }
+        .contact-modal {
+            background: var(--bg-card); border-radius: 28px; max-width: 500px; width: 90%;
+            padding: 32px; box-shadow: var(--shadow-elevated); position: relative;
+        }
+        .contact-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 24px; color: var(--text-primary); }
+        .contact-modal .form-group { margin-bottom: 20px; }
+        .contact-modal label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+        .contact-modal input, .contact-modal textarea {
+            width: 100%; padding: 12px 16px; border: 1px solid var(--border-subtle);
+            border-radius: 14px; background: var(--bg-secondary); font-family: 'Inter', sans-serif;
+            font-size: 14px; color: var(--text-primary); transition: 0.2s;
+        }
+        .contact-modal input:focus, .contact-modal textarea:focus { outline: none; border-color: var(--gold); background: white; }
+        .contact-modal .btn-submit { background: var(--gold); color: white; border: none; border-radius: 50px; padding: 14px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s; }
+        .contact-modal .btn-submit:hover { background: var(--gold-light); }
+
+        /* El resto de estilos (agente, testimonios, FAQ, admin, etc.) permanecen igual */
+        .agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        @media (max-width: 768px) { .agent-grid { grid-template-columns: 1fr; gap: 30px; } }
+        .agent-image { border-radius: 28px; overflow: hidden; box-shadow: var(--shadow-elevated); width: 100%; max-width: 450px; margin: 0 auto; }
+        @media (max-width: 768px) { .agent-image { max-width: 100%; border-radius: 20px; } }
+        .agent-image img { width: 100%; height: auto; display: block; object-fit: cover; aspect-ratio: 1 / 1; }
+        @media (min-width: 769px) { .agent-image img { aspect-ratio: auto; } }
+        .agent-text h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 16px; }
+        @media (max-width: 768px) { .agent-text h2 { font-size: 1.6rem; text-align: center; } .agent-text .section-label { text-align: center; } }
+        .agent-stats { display: flex; gap: 24px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+        .agent-stat { text-align: center; padding: 20px; background: rgba(198,161,91,0.06); border-radius: 20px; flex: 1; min-width: 100px; }
+        .agent-stat-number { font-size: 2rem; font-weight: 700; color: var(--gold-dark); font-family: 'Playfair Display', serif; }
+        @media (max-width: 768px) { .agent-stat-number { font-size: 1.6rem; } }
+
+        .testimonials-swiper { width: 100%; padding: 20px 0 50px; }
+        .testimonial-card { background: var(--bg-card); border-radius: 24px; padding: 28px; margin: 0 15px; border: 1px solid var(--border-subtle); transition: all 0.3s; }
+        .testimonial-card:hover { transform: translateY(-5px); border-color: var(--border-gold); }
+        .testimonial-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+        .testimonial-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+        .testimonial-stars { color: #FBBC05; font-size: 12px; margin-top: 4px; }
+        .testimonial-text { color: var(--text-secondary); line-height: 1.6; font-style: italic; font-size: 0.9rem; }
+
+        .faq-grid { max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; margin-bottom: 16px; overflow: hidden; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; cursor: pointer; font-weight: 600; color: var(--text-primary); }
+        .faq-question:hover { color: var(--gold); }
+        .faq-icon { font-size: 1.2rem; color: var(--gold); transition: transform 0.3s; }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s; padding: 0 24px; color: var(--text-secondary); }
+        .faq-item.active .faq-answer { max-height: 200px; padding: 0 24px 20px; }
+        
+        .calculator-card { background: var(--bg-card); border-radius: 28px; padding: 32px; max-width: 520px; margin: 0 auto; box-shadow: var(--shadow-sm); }
+        .calculator-input { width: 100%; padding: 12px 16px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: 14px; margin-top: 6px; color: var(--text-primary); }
+        .calculator-input:focus { outline: none; border-color: var(--gold); }
+        .calculator-result { text-align: center; margin-top: 24px; padding: 24px; background: var(--gold); border-radius: 20px; color: white; }
+        .calculator-result .monthly { font-size: 2rem; font-weight: 700; }
+
+        .admin-wrapper { display: flex; min-height: 100vh; background: var(--bg-deep); position: relative; }
+        .admin-sidebar { width: 280px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border-right: 1px solid rgba(198,161,91,0.2); padding: 32px 24px; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; transition: transform 0.3s ease; }
+        .admin-sidebar h3 { font-family: 'Playfair Display', serif; margin-bottom: 32px; font-size: 1.2rem; color: var(--text-primary); }
+        .admin-sidebar h3 span { color: var(--gold); }
+        .admin-sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; color: var(--text-secondary); font-size: 13px; font-weight: 500; margin-bottom: 6px; transition: all 0.2s; cursor: pointer; }
+        .admin-sidebar nav a:hover, .admin-sidebar nav a.active { background: rgba(198,161,91,0.15); color: var(--gold); }
+        .admin-main { margin-left: 280px; flex: 1; padding: 32px 40px; background: var(--bg-deep); min-height: 100vh; }
+        .admin-menu-toggle { display: none; position: fixed; bottom: 20px; left: 20px; z-index: 101; background: var(--gold); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 24px; cursor: pointer; box-shadow: var(--shadow-md); }
+        @media (max-width: 768px) { .admin-sidebar { transform: translateX(-100%); width: 260px; } .admin-sidebar.open { transform: translateX(0); } .admin-main { margin-left: 0; padding: 24px; } .admin-menu-toggle { display: flex; align-items: center; justify-content: center; } }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: var(--bg-card); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm); transition: all 0.2s; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .stat-card .stat-number { font-size: 2.2rem; font-weight: 700; color: var(--gold-dark); font-family: 'Playfair Display', serif; }
+        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
+        .admin-welcome { background: var(--bg-card); border-radius: 20px; padding: 24px 28px; margin-bottom: 32px; border-left: 4px solid var(--gold); box-shadow: var(--shadow-sm); opacity: 0; transform: translateY(20px); }
+        .admin-welcome h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 6px; }
+        .admin-welcome p { color: var(--text-secondary); font-size: 14px; }
+
+        .developments-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; margin-top: 32px; }
+        .development-admin-card { background: var(--bg-card); border-radius: 28px; overflow: hidden; box-shadow: var(--shadow-sm); transition: all 0.3s; border: 1px solid var(--border-subtle); cursor: pointer; }
+        .development-admin-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border-gold); }
+        .development-admin-banner { height: 160px; background-size: cover; background-position: center; position: relative; }
+        .development-admin-info { padding: 24px; }
+        .development-admin-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px; color: var(--text-primary); }
+        .development-admin-stats { display: flex; gap: 20px; margin: 16px 0; font-size: 0.75rem; color: var(--text-muted); }
+        .development-admin-actions { display: flex; gap: 12px; margin-top: 16px; }
+        .btn-admin-icon { background: rgba(198,161,91,0.1); border: 1px solid var(--border-subtle); padding: 8px 16px; border-radius: 40px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; color: var(--gold-dark); }
+        .btn-admin-icon:hover { background: rgba(198,161,91,0.2); border-color: var(--gold); }
+
+        .properties-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; margin-top: 24px; }
+        .property-admin-card { background: var(--bg-card); border-radius: 24px; overflow: hidden; border: 1px solid var(--border-subtle); transition: all 0.3s; }
+        .property-admin-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--border-gold); }
+        .property-admin-image { height: 200px; background-size: cover; background-position: center; position: relative; }
+        .property-admin-badge { position: absolute; top: 12px; right: 12px; background: var(--gold); color: white; padding: 4px 12px; border-radius: 40px; font-size: 10px; font-weight: 600; }
+        .property-admin-content { padding: 20px; }
+        .property-admin-price { font-size: 1.3rem; font-weight: 700; color: var(--gold-dark); margin-bottom: 6px; }
+        .property-admin-specs { display: flex; gap: 16px; margin: 12px 0; font-size: 0.75rem; color: var(--text-muted); }
+        .property-admin-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 10000; visibility: hidden; opacity: 0; transition: all 0.3s; }
+        .drawer-overlay.active { visibility: visible; opacity: 1; }
+        .drawer {
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 680px;
+            height: 100vh; background: var(--bg-card); box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+            z-index: 10001; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+            display: flex; flex-direction: column;
+        }
+        @media (max-width: 768px) { .drawer { max-width: 100%; height: 90vh; top: auto; bottom: 0; border-radius: 32px 32px 0 0; } }
+        .drawer.active { transform: translateX(0); }
+        .drawer-header { padding: 20px 28px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .drawer-header h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text-primary); }
+        .drawer-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); }
+        .drawer-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .drawer-body form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+        .drawer-body .form-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+        .drawer-body .form-footer {
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-subtle);
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            z-index: 2;
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gold-dark); margin-bottom: 4px; }
+        .form-control { width: 100%; padding: 10px 14px; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: 16px; font-size: 13px; color: var(--text-primary); }
+        .form-control:focus { outline: none; border-color: var(--gold); background: white; }
+        .dropzone {
+            border: 2px dashed var(--border-gold);
+            border-radius: 16px;
+            padding: 14px 12px;
+            text-align: center;
+            background: rgba(198,161,91,0.12);
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: 0.2s;
+            color: var(--gold-dark);
+            font-size: 12px;
+            font-weight: 500;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dropzone.drag-over { border-color: var(--gold); background: rgba(198,161,91,0.22); }
+        .images-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 8px; margin-top: 10px; }
+        .image-preview-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 1; background: var(--bg-secondary); border: 1px solid var(--border-subtle); }
+        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .image-preview-item .remove-image { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+        .image-preview-item select {
+            position: absolute; bottom: 3px; left: 3px; right: 3px;
+            background: rgba(0,0,0,0.65); color: white; border: none;
+            border-radius: 6px; font-size: 9px; padding: 2px 4px;
+            appearance: none; text-align: center; cursor: pointer;
+        }
+        .btn-primary { background: var(--gold); color: white; border: none; padding: 12px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; width: 100%; font-size: 13px; transition: 0.2s; }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+        .drawer-body .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (max-width: 500px) { .drawer-body .form-grid { grid-template-columns: 1fr; } }
+
+        .whatsapp-float { position: fixed; bottom: 24px; right: 24px; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(37,211,102,0.3); cursor: pointer; z-index: 999; transition: 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.08); }
+        .toast { position: fixed; bottom: 100px; right: 24px; background: var(--bg-card); backdrop-filter: blur(12px); padding: 10px 20px; border-radius: 60px; border-left: 3px solid var(--gold); z-index: 1000; transform: translateX(120%); transition: 0.3s; box-shadow: var(--shadow-md); font-size: 13px; color: var(--text-primary); }
+        .toast.show { transform: translateX(0); }
+        footer { background: var(--bg-primary); border-top: 1px solid var(--border-subtle); padding: 50px 40px 30px; text-align: center; color: var(--text-muted); margin-top: 50px; font-size: 13px; }
+
+        .chatbot-whatsapp { position: fixed; bottom: 80px; right: 24px; width: 350px; max-width: 90vw; height: 500px; max-height: 70vh; background: var(--bg-card); border-radius: 24px; box-shadow: var(--shadow-elevated); z-index: 2000; display: flex; flex-direction: column; border: 1px solid var(--border-gold); opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.3s; }
+        .chatbot-whatsapp.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .chat-header { background: var(--gold); color: white; padding: 16px; border-radius: 24px 24px 0 0; display: flex; align-items: center; gap: 12px; }
+        .chat-header .avatar { width: 40px; height: 40px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 18px; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .chat-message { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
+        .chat-message.bot { background: var(--bg-secondary); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-message.user { background: var(--gold); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-input-area { padding: 12px; display: flex; gap: 8px; border-top: 1px solid var(--border-subtle); }
+        .chat-input-area input { flex: 1; padding: 10px 14px; border-radius: 24px; border: 1px solid var(--border-subtle); background: var(--bg-secondary); font-family: 'Inter', sans-serif; }
+        .chat-input-area button { width: 44px; height: 44px; border-radius: 50%; background: var(--gold); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .chatbot-toggle-wa { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); cursor: pointer; z-index: 2001; font-size: 24px; transition: 0.2s; }
+        .chatbot-toggle-wa:hover { transform: scale(1.05); }
+
+        .swiper-pagination { z-index: 10; position: relative; }
+    </style>
+</head>
+<body>
+    <div class="luxury-loader" id="luxuryLoader">
+        <div class="loader-logo" id="loaderLogo">Javier<span>Estrada</span></div>
+        <div class="loader-progress"><div class="loader-progress-bar" id="loaderBar"></div></div>
+    </div>
+
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="custom-cursor-trail" id="customCursorTrail"></div>
+    <div id="toast" class="toast"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-logo" id="navbarLogo" onclick="navigateTo('home')">Javier<span>Estrada</span></a>
+        <ul class="nav-links" id="navLinks">
+            <button class="close-menu" onclick="document.getElementById('navLinks').classList.remove('active')" style="display:none;"><i class="fas fa-times"></i></button>
+            <li><a href="#" onclick="navigateTo('home')">Inicio</a></li>
+            <li><a href="#" onclick="navigateTo('catalog')">Propiedades</a></li>
+            <li><a href="#" onclick="navigateTo('calculator')">Hipoteca</a></li>
+            <li><a href="#" onclick="navigateTo('faq')">FAQ</a></li>
+            <li><a href="#" onclick="navigateTo('admin')">Admin</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="chatbot-whatsapp" id="whatsappChat">
+        <div class="chat-header"><div class="avatar"><i class="fas fa-user-tie"></i></div><div class="name">Javier Estrada</div></div>
+        <div class="chat-body" id="whatsappBody"><div class="chat-message bot">¡Hola! Soy el asistente de Javier. ¿Te gustaría conocer nuestras propiedades? Escribe <b>info</b> para comenzar.</div></div>
+        <div class="chat-input-area"><input type="text" id="whatsappInput" placeholder="Escribe un mensaje..."><button onclick="sendWhatsappMessage()"><i class="fas fa-paper-plane"></i></button></div>
+    </div>
+    <div class="chatbot-toggle-wa" id="chatbotToggleWa" onclick="toggleWhatsappChat()"><i class="fas fa-comment-dots"></i></div>
+
+    <div class="whatsapp-float" id="whatsappFloat"><i class="fab fa-whatsapp" style="font-size: 26px; color: white;"></i></div>
+    <main id="mainContent"></main>
+    <footer><div><p>Javier Estrada · Luxury Real Estate · Ciudad Juárez</p><p style="font-size:11px;margin-top:12px;">© 2025 - Todos los derechos reservados</p></div></footer>
+
+    <script>
+        // ============================================================
+        //  🔴 CAMBIA AQUÍ LA IMAGEN DEL HERO PARA CELULAR
+        // ============================================================
+        const HERO_MOBILE_URL  = 'c.png';   // ← 🔴 Imagen para celular (cambia 'hero.png' por tu URL)
+
+        // ============================================================
+        //  🔵 CAMBIA AQUÍ LA IMAGEN DEL HERO PARA COMPUTADORA
+        // ============================================================
+        const HERO_DESKTOP_URL = 'hero.png';   // ← 🔵 Imagen para computadora (cambia 'hero.png' por tu URL)
+
+        // ============ CONFIGURACIÓN INICIAL ============
+        let siteConfig = JSON.parse(localStorage.getItem('javier_site_config')) || { 
+            adminName: 'Javier Estrada', 
+            adminTitle: 'Executive', 
+            logoUrl: ''
+            // Las URLs del hero NO se guardan en localStorage.
+            // Siempre se toman de las constantes HERO_MOBILE_URL y HERO_DESKTOP_URL.
+        };
+
+        // ---- Lenis seguro ----
+        let lenis = null;
+        try {
+            lenis = new Lenis({ 
+                duration: 1.2, 
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+                smooth: true 
+            });
+            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+            window.scrollTo = (options) => { 
+                if (typeof options === 'number') lenis.scrollTo(options, { offset: 0 }); 
+                else if (options.top !== undefined) lenis.scrollTo(options.top, { offset: 0 }); 
+            };
+        } catch (e) {
+            console.warn('Lenis no disponible, usando scroll nativo');
+            window.scrollTo = (options) => {
+                if (typeof options === 'number') window.scrollTo(0, options);
+                else if (options.top !== undefined) window.scrollTo(0, options.top);
+            };
+        }
+
+        // ========== HERO RESPONSIVE DINÁMICO ==========
+        let heroMediaQuery = null;
+
+        // Función que actualiza la imagen del hero según el ancho actual
+        function updateHeroImage() {
+            const heroImg = document.querySelector('.hero-video');
+            if (!heroImg) return; // No estamos en la página principal
+            const isMobile = window.innerWidth <= 768;
+            heroImg.src = isMobile ? HERO_MOBILE_URL : HERO_DESKTOP_URL;
+        }
+
+        // Configura el listener para cambios de breakpoint
+        function setupHeroResponsive() {
+            if (heroMediaQuery) return; // Evita duplicados
+            heroMediaQuery = window.matchMedia('(max-width: 768px)');
+            heroMediaQuery.addEventListener('change', updateHeroImage);
+        }
+
+        // Limpia el listener al salir de la página principal
+        function cleanupHeroResponsive() {
+            if (heroMediaQuery) {
+                heroMediaQuery.removeEventListener('change', updateHeroImage);
+                heroMediaQuery = null;
+            }
+        }
+
+        let developmentsData = JSON.parse(localStorage.getItem('javier_developments')) || [
+            { id: 'montevalle', name: 'Montevalle Residencial', location: 'Zona Poniente, Cd. Juárez', priceBase: 'Desde $4,800,000 MXN', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600' },
+            { id: 'cerrada-castano', name: 'Cerrada Castaño', location: 'Noroeste, Cd. Juárez', priceBase: 'Desde $7,500,000 MXN', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600' },
+            { id: 'amberes', name: 'Amberes', location: 'Norte, Cd. Juárez', priceBase: 'Desde $8,900,000 MXN', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600' },
+            { id: 'sendareal', name: 'Sendareal', location: 'Zona Oriente, Cd. Juárez', priceBase: 'Desde $5,500,000 MXN', image: 'https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=600' },
+            { id: 'cerradas-santiago', name: 'Cerradas de Santiago', location: 'Sur, Cd. Juárez', priceBase: 'Desde $9,200,000 MXN', image: 'https://images.unsplash.com/photo-1600566753086-00f18f6b0050?w=600' },
+            { id: 'rincon-marquez', name: 'Rincón del Márquez', location: 'Poniente Premium, Cd. Juárez', priceBase: 'Desde $6,300,000 MXN', image: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=600' }
+        ];
+
+        function saveDevelopments() { localStorage.setItem('javier_developments', JSON.stringify(developmentsData)); }
+
+        const DB_NAME = 'javier_images_db';
+        const DB_STORE = 'images';
+        let db = null;
+        const imageCache = new Map();
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(DB_STORE)) {
+                        db.createObjectStore(DB_STORE, { keyPath: 'id' });
+                    }
+                };
+                request.onsuccess = (e) => { db = e.target.result; resolve(db); };
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function storeImageInDB(id, dataUrl) {
+            if (!db) await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(DB_STORE, 'readwrite');
+                const store = tx.objectStore(DB_STORE);
+                store.put({ id, dataUrl });
+                tx.oncomplete = () => resolve();
+                tx.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function getImageFromDB(id) {
+            if (!db) await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(DB_STORE, 'readonly');
+                const store = tx.objectStore(DB_STORE);
+                const request = store.get(id);
+                request.onsuccess = () => resolve(request.result ? request.result.dataUrl : null);
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function loadAllImagesIntoCache() {
+            if (!db) await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(DB_STORE, 'readonly');
+                const store = tx.objectStore(DB_STORE);
+                const request = store.getAll();
+                request.onsuccess = () => {
+                    (request.result || []).forEach(item => imageCache.set(item.id, item.dataUrl));
+                    resolve();
+                };
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        function getImageSrc(imgObj) {
+            if (!imgObj) return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800';
+            if (typeof imgObj === 'string') return imgObj;
+            const src = imgObj.src;
+            if (src && src.startsWith('data:')) return src;
+            return imageCache.get(src) || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800';
+        }
+
+        let properties = JSON.parse(localStorage.getItem('javier_properties'));
+        const devCounts = {
+            'Montevalle Residencial': 4,
+            'Cerrada Castaño': 3,
+            'Amberes': 3,
+            'Sendareal': 3,
+            'Cerradas de Santiago': 1,
+            'Rincón del Márquez': 3
+        };
+
+        if (!properties || properties.length === 0) {
+            properties = [];
+            const modelos = ['Villa', 'Residencia', 'Casa', 'Penthouse', 'Hacienda'];
+            for (let dev of developmentsData) {
+                const cnt = devCounts[dev.name] || 3;
+                for (let i = 1; i <= cnt; i++) {
+                    const precios = [4800000, 6200000, 8900000, 7200000, 13500000, 9500000, 5500000, 11200000];
+                    const price = precios[(dev.id.length + i) % precios.length];
+                    properties.push({
+                        id: `${dev.id}-${i}-${Date.now()}-${Math.random().toString(36).slice(2,6)}`,
+                        name: `${modelos[(i-1) % modelos.length]} ${dev.name.split(' ')[0]} ${String.fromCharCode(64+i)}`,
+                        price, location: dev.name,
+                        description: `Exclusiva propiedad en ${dev.name}. Acabados premium y ubicación privilegiada.`,
+                        buildSize: 280 + i * 20, bedrooms: 3 + (i % 2), bathrooms: 2.5 + (i % 3) * 0.5, parking: 2 + (i % 2),
+                        amenities: ['Jardín privado', 'Cocina integral', 'Terraza panorámica', 'Alberca', 'Seguridad 24/7'],
+                        featured: i === 1,
+                        images: []
+                    });
+                }
+            }
+            localStorage.setItem('javier_properties', JSON.stringify(properties));
+        }
+
+        function migratePropertyImagesLegacy() {
+            let updated = false;
+            properties.forEach(p => {
+                if (p.images && p.images.length && typeof p.images[0] === 'string') {
+                    p.images = p.images.map(src => ({ src, category: 'general' }));
+                    updated = true;
+                }
+            });
+            if (updated) saveData();
+        }
+        migratePropertyImagesLegacy();
+
+        function ensureAllDevelopmentsHaveProperties() {
+            const modelos = ['Villa', 'Residencia', 'Casa', 'Penthouse', 'Hacienda'];
+            developmentsData.forEach(dev => {
+                const targetCount = devCounts[dev.name] || 3;
+                const count = properties.filter(p => p.location === dev.name).length;
+                if (count < targetCount) {
+                    for (let i = count + 1; i <= targetCount; i++) {
+                        const precios = [4800000, 6200000, 8900000, 7200000, 13500000, 9500000, 5500000, 11200000];
+                        const price = precios[(dev.id.length + i) % precios.length];
+                        properties.push({
+                            id: `${dev.id}-${i}-${Date.now()}-${Math.random().toString(36).slice(2,6)}`,
+                            name: `${modelos[(i-1) % modelos.length]} ${dev.name.split(' ')[0]} ${String.fromCharCode(64+i)}`,
+                            price, location: dev.name,
+                            description: `Exclusiva propiedad en ${dev.name}.`,
+                            buildSize: 280 + i * 20, bedrooms: 3 + (i % 2), bathrooms: 2.5 + (i % 3) * 0.5, parking: 2 + (i % 2),
+                            amenities: ['Jardín privado', 'Cocina integral', 'Terraza', 'Alberca'],
+                            featured: false,
+                            images: []
+                        });
+                    }
+                    saveData();
+                }
+            });
+        }
+        ensureAllDevelopmentsHaveProperties();
+
+        let leads = JSON.parse(localStorage.getItem('javier_leads')) || [];
+        let currentPage = 'home';
+        let isAdmin = localStorage.getItem('admin_auth') === 'true';
+        let adminSection = 'dashboard';
+        let currentDevelopmentId = null;
+        let currentEditProperty = null;
+        let pendingImagesArray = [];
+        let isTransitioning = false;
+        let activeDrawer = null;
+        let waState = { step: 0, name: '', phone: '', budget: '', credit: '', asesoria: '' };
+
+        // ========== CONEXIÓN CON BACKEND ==========
+        const API_BASE = 'https://backend-javier.onrender.com';
+        let authToken = localStorage.getItem('admin_token') || null;
+
+        async function apiRequest(endpoint, options = {}) {
+            const url = `${API_BASE}${endpoint}`;
+            const headers = {
+                ...(authToken ? { 'Authorization': `Bearer ${authToken}` } : {})
+            };
+            if (!(options.body instanceof FormData)) {
+                headers['Content-Type'] = 'application/json';
+            }
+            const config = { ...options, headers: { ...headers, ...(options.headers || {}) } };
+            const response = await fetch(url, config);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Error ${response.status}`);
+            }
+            return await response.json();
+        }
+
+        function showToast(msg) { let t = document.getElementById('toast'); if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); } }
+
+        function saveData() {
+            localStorage.setItem('javier_properties', JSON.stringify(properties));
+            localStorage.setItem('javier_leads', JSON.stringify(leads));
+            localStorage.setItem('javier_site_config', JSON.stringify(siteConfig));
+            // Sincronizar con backend si hay token de administrador
+            if (authToken) {
+                apiRequest('/api/properties', { method: 'POST', body: JSON.stringify(properties) }).catch(() => {});
+                apiRequest('/api/leads', { method: 'POST', body: JSON.stringify(leads) }).catch(() => {});
+            }
+        }
+
+        function applySiteConfig() {
+            const logoEl = document.getElementById('navbarLogo');
+            const loaderLogoEl = document.getElementById('loaderLogo');
+            if (siteConfig.logoUrl) {
+                if (logoEl) logoEl.innerHTML = `<img src="${siteConfig.logoUrl}" alt="Logo" style="height:32px; border-radius:8px;"> <span>${siteConfig.adminName.split(' ').pop()}</span>`;
+                if (loaderLogoEl) loaderLogoEl.innerHTML = `<img src="${siteConfig.logoUrl}" alt="Logo" style="height:40px; border-radius:8px;"> <span>${siteConfig.adminName.split(' ').pop()}</span>`;
+            } else {
+                if (logoEl) logoEl.innerHTML = `${siteConfig.adminName.split(' ')[0]}<span>${siteConfig.adminName.split(' ').pop()}</span>`;
+                if (loaderLogoEl) loaderLogoEl.innerHTML = `${siteConfig.adminName.split(' ')[0]}<span>${siteConfig.adminName.split(' ').pop()}</span>`;
+            }
+        }
+        applySiteConfig();
+
+        const WHATSAPP_NUMBER = '5216566977444';
+
+        function addLead(name, phone, propertyName) { leads.unshift({ id: Date.now(), name, phone, propertyName, date: new Date().toISOString(), status: 'nuevo' }); saveData(); showToast('✅ Gracias! Javier te contactará pronto'); }
+        function deleteLead(id) { leads = leads.filter(l => l.id !== id); saveData(); render(); showToast('Lead eliminado'); }
+
+        // ========== NUEVA FUNCIÓN DE CONTACTO (REEMPLAZA AL ANTIGUO trackWhatsApp) ==========
+        function openContactModal(propertyName = '') {
+            const existing = document.querySelector('.contact-modal-overlay');
+            if (existing) existing.remove();
+            const overlay = document.createElement('div');
+            overlay.className = 'contact-modal-overlay';
+            overlay.innerHTML = `
+                <div class="contact-modal">
+                    <button class="modal-close" style="position:absolute;top:15px;right:15px;background:rgba(0,0,0,0.6);border:none;width:36px;height:36px;border-radius:50%;color:white;font-size:20px;" onclick="this.closest('.contact-modal-overlay').remove()">✕</button>
+                    <h3>Solicitar información</h3>
+                    <form onsubmit="submitContactForm(event, '${propertyName}')">
+                        <div class="form-group"><label>Nombre completo *</label><input type="text" id="contactName" required></div>
+                        <div class="form-group"><label>WhatsApp *</label><input type="tel" id="contactPhone" required></div>
+                        <div class="form-group"><label>Mensaje</label><textarea id="contactMsg" rows="2" placeholder="Me interesa recibir información sobre ${propertyName || 'sus propiedades'}"></textarea></div>
+                        <button type="submit" class="btn-submit"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.classList.add('active'), 10);
+        }
+
+        function submitContactForm(e, propertyName) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value.trim();
+            const phone = document.getElementById('contactPhone').value.trim();
+            const msg = document.getElementById('contactMsg').value.trim();
+            if (!name || !phone) return showToast('Nombre y WhatsApp son obligatorios');
+            leads.unshift({ id: Date.now(), name, phone, propertyName, date: new Date().toISOString() });
+            saveData();
+            document.querySelector('.contact-modal-overlay')?.remove();
+            const mensaje = `Hola Javier, soy ${name}. ${msg || 'Me interesa recibir información.'} ${propertyName ? '(' + propertyName + ')' : ''}`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank');
+            showToast('✅ Redirigiendo a WhatsApp');
+        }
+
+        // Se conserva trackWhatsApp para compatibilidad con el chatbot (no se usa en botones)
+        function trackWhatsApp(propertyName) { openContactModal(propertyName); }
+
+        function smoothPageChange(callback) { if (isTransitioning) return; isTransitioning = true; gsap.to('#mainContent', { opacity: 0, y: 20, duration: 0.35, ease: "power2.in", onComplete: () => { callback(); gsap.fromTo('#mainContent', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", onComplete: () => { isTransitioning = false; } }); } }); }
+        function navigateTo(page) { 
+            smoothPageChange(() => { 
+                if (currentPage === 'home' && page !== 'home') {
+                    cleanupHeroResponsive();
+                }
+                currentPage = page; 
+                render(); 
+                if(page !== 'admin') window.scrollTo(0,0); 
+                document.getElementById('navLinks')?.classList.remove('active'); 
+            }); 
+        }
+
+        function render() {
+            const navbar = document.getElementById('navbar');
+            if (currentPage === 'admin' && isAdmin) { 
+                if(navbar) navbar.style.display = 'none'; 
+                document.getElementById('mainContent').innerHTML = renderAdmin(); 
+                if(adminSection === 'dashboard') renderAdminDashboard(); 
+                else if(adminSection === 'developments') renderAdminDevelopments(); 
+                else if(adminSection === 'leads') renderAdminLeads(); 
+                else if(adminSection === 'config') renderAdminConfig(); 
+            } else { 
+                if(navbar) navbar.style.display = 'flex'; 
+                document.getElementById('mainContent').innerHTML = currentPage === 'admin' ? renderLogin() : renderPublic(); 
+                if(currentPage !== 'admin') attachEvents(); 
+            }
+            if(currentPage !== 'admin') animateEntrance(); 
+            updateNavbarGlass();
+        }
+
+        function updateNavbarGlass() { const navbar = document.getElementById('navbar'); if(!navbar || currentPage !== 'home') { if(navbar) navbar.classList.remove('glass'); return; } const hero = document.querySelector('.hero-section'); if(!hero) return; const rect = hero.getBoundingClientRect(); if(rect.bottom > 0 && rect.top < window.innerHeight && window.scrollY < 50) navbar.classList.add('glass'); else navbar.classList.remove('glass'); }
+
+        function renderLogin() { return `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-deep);"><div style="background:var(--bg-card);padding:40px;border-radius:32px;width:360px;border:1px solid var(--border-subtle);"><h2 style="margin-bottom:20px;text-align:center;">Acceso Ejecutivo</h2><input id="adminUser" placeholder="Usuario" style="width:100%;padding:12px;margin-bottom:12px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-subtle);"><input id="adminPass" type="password" placeholder="Contraseña" style="width:100%;padding:12px;margin-bottom:20px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-subtle);"><button class="btn-gold-hero" style="width:100%;" onclick="doLogin()">Ingresar</button></div></div>`; }
+
+    async function doLogin() {
+
+    const u = document.getElementById('adminUser')?.value.trim();
+    const p = document.getElementById('adminPass')?.value.trim();
+
+    if (!u || !p) {
+        return showToast('Ingresa usuario y contraseña');
+    }
+
+    // LOGIN LOCAL TEMPORAL
+    if (u === 'erikzon' && p === 'itziron123') {
+
+        localStorage.setItem('admin_auth', 'true');
+
+        isAdmin = true;
+        currentPage = 'admin';
+        adminSection = 'dashboard';
+        currentDevelopmentId = null;
+
+        render();
+
+        showToast('✅ Login correcto');
+
+    } else {
+
+        showToast('❌ Credenciales incorrectas');
+
+    }
+}
+
+        
+
+        function logoutAdmin() { localStorage.removeItem('admin_auth'); localStorage.removeItem('admin_token'); authToken = null; window.location.href = window.location.pathname; }
+
+        function toggleWhatsappChat() { document.getElementById('whatsappChat').classList.toggle('open'); }
+        function addWAMessage(text, sender) { const body = document.getElementById('whatsappBody'); if(!body) return; const div = document.createElement('div'); div.className = `chat-message ${sender}`; div.textContent = text; body.appendChild(div); body.scrollTop = body.scrollHeight; }
+        function sendWhatsappMessage() {
+            const input = document.getElementById('whatsappInput'); const msg = input.value.trim(); if(!msg) return;
+            addWAMessage(msg, 'user'); input.value = '';
+            if (waState.step === 0) { if (msg.toLowerCase().includes('info') || msg.toLowerCase().includes('propiedades')) { waState.step = 1; setTimeout(() => addWAMessage('¿Con qué presupuesto cuentas aproximadamente? (ej: 5,000,000)', 'bot'), 500); } else { setTimeout(() => addWAMessage('Puedes escribir "info" para comenzar 😊', 'bot'), 500); } }
+            else if (waState.step === 1) { waState.budget = msg.replace(/\D/g, ''); waState.step = 2; setTimeout(() => addWAMessage('¿Tienes crédito hipotecario preaprobado? (responde "si" o "no")', 'bot'), 500); }
+            else if (waState.step === 2) { waState.credit = msg.toLowerCase().includes('si') ? 'si' : 'no'; waState.step = 3; setTimeout(() => addWAMessage('¿Quieres una asesoría personalizada ahora o prefieres que te contactemos después? (responde "ahora" o "después")', 'bot'), 500); }
+            else if (waState.step === 3) { waState.asesoria = msg.toLowerCase().includes('ahora') ? 'ahora' : 'despues'; if (waState.asesoria === 'ahora') { waState.step = 4; setTimeout(() => addWAMessage('Perfecto. Para agendar tu asesoría, ¿me compartes tu nombre?', 'bot'), 500); } else { leads.unshift({ id: Date.now(), name: waState.name || 'No proporcionado', budget: waState.budget, credit: waState.credit, asesoria: 'despues', date: new Date().toISOString() }); saveData(); setTimeout(() => addWAMessage('De acuerdo. Hemos guardado tu información. Javier te contactará pronto. ¡Gracias!', 'bot'), 500); waState = { step: 0, name: '', phone: '', budget: '', credit: '', asesoria: '' }; } }
+            else if (waState.step === 4) { waState.name = msg; waState.step = 5; setTimeout(() => addWAMessage(`Gracias ${waState.name}. Por último, ¿cuál es tu número de teléfono?`, 'bot'), 500); }
+            else if (waState.step === 5) { waState.phone = msg.replace(/\D/g, ''); leads.unshift({ id: Date.now(), name: waState.name, phone: waState.phone, budget: waState.budget, credit: waState.credit, asesoria: 'ahora', date: new Date().toISOString() }); saveData(); const mensaje = `Hola Javier, soy ${waState.name}. Me interesa recibir asesoría. Presupuesto: $${Number(waState.budget).toLocaleString()}, Crédito: ${waState.credit}. Tel: ${waState.phone}`; window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank'); setTimeout(() => addWAMessage('Te estamos redirigiendo al WhatsApp de Javier para tu asesoría personalizada. ¡Gracias!', 'bot'), 500); waState = { step: 0, name: '', phone: '', budget: '', credit: '', asesoria: '' }; }
+        }
+
+        function renderAdmin() { return `<div class="admin-wrapper"><div class="admin-sidebar" id="adminSidebar"><h3>${siteConfig.adminName.split(' ')[0]}<span>${siteConfig.adminName.split(' ').pop()}</span> <span style="font-size:10px;">${siteConfig.adminTitle}</span></h3><nav><a onclick="setAdminSection('dashboard')" class="${adminSection==='dashboard'?'active':''}"><i class="fas fa-chart-pie"></i> Dashboard</a><a onclick="setAdminSection('developments')" class="${adminSection==='developments'?'active':''}"><i class="fas fa-building"></i> Fraccionamientos</a><a onclick="setAdminSection('leads')" class="${adminSection==='leads'?'active':''}"><i class="fas fa-users"></i> Leads (${leads.length})</a><a onclick="setAdminSection('config')" class="${adminSection==='config'?'active':''}"><i class="fas fa-cog"></i> Configuración</a><a onclick="logoutAdmin()" style="color:#f43f5e;"><i class="fas fa-sign-out-alt"></i> Salir</a></nav></div><button class="admin-menu-toggle" id="adminMenuToggle"><i class="fas fa-bars"></i></button><div class="admin-main" id="adminMain"><div id="adminContent"></div></div></div>`; }
+        function setAdminSection(section) { adminSection = section; if(section === 'dashboard') currentDevelopmentId = null; render(); if(window.innerWidth <= 768) document.getElementById('adminSidebar')?.classList.remove('open'); }
+
+        function renderAdminDashboard() {
+            const container = document.getElementById('adminContent'); if(!container) return;
+            const totalProps = properties.length; const totalLeads = leads.length;
+            container.innerHTML = `<div class="admin-welcome" id="adminWelcome"><h2>Bienvenido, <span class="text-gold">${siteConfig.adminName}</span></h2><p>Panel de gestión ejecutiva.</p></div><div class="stats-grid"><div class="stat-card"><div class="stat-number">${totalProps}</div><div class="stat-label">Propiedades</div></div><div class="stat-card"><div class="stat-number">${totalLeads}</div><div class="stat-label">Leads</div></div><div class="stat-card"><div class="stat-number">${developmentsData.length}</div><div class="stat-label">Fraccionamientos</div></div></div><canvas id="avgPriceChart" style="max-height:300px; margin-bottom:40px;"></canvas>`;
+            gsap.fromTo('#adminWelcome', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 });
+            renderAvgChart();
+        }
+
+        function renderAdminDevelopments() {
+            const container = document.getElementById('adminContent'); if(!container) return;
+            if(!currentDevelopmentId) {
+                container.innerHTML = `<div style="margin-bottom:40px;display:flex;justify-content:space-between;align-items:center;"><h2 style="font-size:1.8rem;font-family:'Playfair Display';">Fraccionamientos</h2><button class="btn-outline-solid" onclick="addNewDevelopment()"><i class="fas fa-plus"></i> Agregar</button></div><div class="developments-admin-grid">${developmentsData.map(dev => { const devProps = properties.filter(p => p.location === dev.name); return `<div class="development-admin-card" onclick="openDevelopment('${dev.name}')"><div class="development-admin-banner" style="background-image:url('${dev.image}')"></div><div class="development-admin-info"><h3>${dev.name}</h3><div class="development-admin-stats"><span><i class="fas fa-home"></i> ${devProps.length} props</span><span>Desde $${devProps.length ? Math.min(...devProps.map(p=>p.price)).toLocaleString() : 0}</span></div><div class="development-admin-actions"><button class="btn-admin-icon" onclick="event.stopPropagation();openDevelopment('${dev.name}')"><i class="fas fa-eye"></i></button><button class="btn-admin-icon" onclick="event.stopPropagation();editDevelopmentDrawer('${dev.name}')"><i class="fas fa-edit"></i></button></div></div></div>`; }).join('')}</div>`;
+            } else {
+                const devProps = properties.filter(p => p.location === currentDevelopmentId);
+                container.innerHTML = `<div style="background:var(--bg-card);border-radius:32px;padding:32px;margin-bottom:40px;"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;"><h2>${currentDevelopmentId}</h2><div style="display:flex;gap:12px;"><button class="btn-outline-solid" onclick="openAddPropertyDrawer()"><i class="fas fa-plus"></i> Agregar</button><button class="btn-outline-solid" onclick="goBackToDevelopments()">← Volver</button></div></div></div><div class="properties-admin-grid">${devProps.map(prop => `<div class="property-admin-card"><div class="property-admin-image" style="background-image:url('${prop.images && prop.images.length > 0 ? getImageSrc(prop.images[0]) : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400'}')">${prop.featured?'<div class="property-admin-badge">Destacada</div>':''}</div><div class="property-admin-content"><div class="property-admin-price">$${prop.price.toLocaleString()}</div><h3>${prop.name}</h3><div class="property-admin-specs"><span><i class="fas fa-bed"></i> ${prop.bedrooms}</span><span><i class="fas fa-bath"></i> ${prop.bathrooms}</span></div><div class="property-admin-actions"><button class="btn-admin-icon" onclick="editPropertyDrawer('${prop.id}')"><i class="fas fa-edit"></i> Editar</button><button class="btn-admin-icon" onclick="deleteProperty('${prop.id}')" style="color:#f43f5e;"><i class="fas fa-trash"></i></button></div></div></div>`).join('')}</div>`;
+            }
+        }
+
+        function goBackToDevelopments() { currentDevelopmentId = null; render(); }
+
+        function renderAdminLeads() { 
+            const container = document.getElementById('adminContent'); 
+            container.innerHTML = `<div style="margin-bottom:40px;"><h2 style="font-size:1.8rem;font-family:'Playfair Display';">Leads</h2></div><div style="display:flex;flex-direction:column;gap:16px;">${leads.slice().reverse().map(l => `<div style="background:var(--bg-card);border-radius:20px;padding:20px;"><div style="display:flex;justify-content:space-between;align-items:center;"><div><strong>${l.name||'Anónimo'}</strong> · ${l.phone||'Sin teléfono'}<br><small>${new Date(l.date).toLocaleDateString()} - ${l.propertyName||'Propiedad'}</small></div><button class="btn-admin-icon" onclick="deleteLead(${l.id})" style="color:#f43f5e;"><i class="fas fa-trash"></i></button></div></div>`).join('')}${leads.length===0?'<div style="text-align:center;padding:60px;">No hay leads aún</div>':''}</div>`; 
+        }
+
+        function renderAdminConfig() {
+            const container = document.getElementById('adminContent');
+            container.innerHTML = `<div class="admin-welcome"><h2>Configuración</h2><p>Personaliza tu panel y sitio.</p></div>
+            <div class="form-group"><label>Nombre del administrador</label><input type="text" id="configAdminName" class="form-control" value="${siteConfig.adminName}"></div>
+            <div class="form-group"><label>Título</label><input type="text" id="configAdminTitle" class="form-control" value="${siteConfig.adminTitle}"></div>
+            <div class="form-group"><label>Logo (URL o subir)</label><div id="logoDropzone" class="dropzone">📸 Arrastra o haz clic para subir logo</div><input type="file" id="logoFileInput" accept="image/*" style="display:none;"><div id="logoPreview" style="margin-top:10px;">${siteConfig.logoUrl ? `<img src="${siteConfig.logoUrl}" style="height:60px;">` : ''}</div></div>
+            <button class="btn-primary" onclick="saveSiteConfig()">Guardar configuración</button>`;
+            const dropzone = document.getElementById('logoDropzone');
+            const fileInput = document.getElementById('logoFileInput');
+            if(dropzone) {
+                dropzone.addEventListener('click', () => fileInput.click());
+                dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+                dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+                dropzone.addEventListener('drop', (e) => { e.preventDefault(); dropzone.classList.remove('drag-over'); handleLogoFile(e.dataTransfer.files[0]); });
+            }
+            if(fileInput) fileInput.addEventListener('change', (e) => { if(e.target.files[0]) handleLogoFile(e.target.files[0]); });
+            function handleLogoFile(file) { const reader = new FileReader(); reader.onload = (ev) => { siteConfig.logoUrl = ev.target.result; document.getElementById('logoPreview').innerHTML = `<img src="${ev.target.result}" style="height:60px;">`; }; reader.readAsDataURL(file); }
+        }
+
+        function saveSiteConfig() {
+            siteConfig.adminName = document.getElementById('configAdminName').value || 'Javier Estrada';
+            siteConfig.adminTitle = document.getElementById('configAdminTitle').value || 'Executive';
+            saveData();
+            applySiteConfig();
+            render();
+            showToast('Configuración guardada');
+        }
+
+        function addNewDevelopment() {
+            const formHtml = `<div class="form-scroll"><div class="form-group"><label>Nombre</label><input type="text" id="newDevName" class="form-control" required></div><div class="form-group"><label>Ubicación</label><input type="text" id="newDevLocation" class="form-control"></div><div class="form-group"><label>Precio Base</label><input type="text" id="newDevPriceBase" class="form-control" placeholder="Desde $..."></div><div class="form-group"><label>Imagen</label><div id="newDevDropzone" class="dropzone">📸 Arrastra o haz clic para subir imagen</div><input type="file" id="newDevFileInput" accept="image/*" style="display:none;"><div id="newDevPreview" style="margin-top:10px;"></div></div></div><div class="form-footer"><button type="button" class="btn-primary" onclick="saveNewDevelopment()">Crear fraccionamiento</button></div>`;
+            openDrawer('Nuevo fraccionamiento', formHtml, false);
+            const dropzone = document.getElementById('newDevDropzone');
+            const fileInput = document.getElementById('newDevFileInput');
+            window._newDevImage = '';
+            if(dropzone) {
+                dropzone.addEventListener('click', () => fileInput.click());
+                dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+                dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+                dropzone.addEventListener('drop', (e) => { e.preventDefault(); dropzone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+            }
+            if(fileInput) fileInput.addEventListener('change', (e) => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+            function handleFile(file) { const reader = new FileReader(); reader.onload = (ev) => { window._newDevImage = ev.target.result; document.getElementById('newDevPreview').innerHTML = `<img src="${ev.target.result}" style="height:100px;">`; }; reader.readAsDataURL(file); }
+        }
+
+        function saveNewDevelopment() {
+            const name = document.getElementById('newDevName').value.trim();
+            if(!name) return showToast('El nombre es obligatorio');
+            const newDev = {
+                id: name.toLowerCase().replace(/\s+/g,'-'),
+                name,
+                location: document.getElementById('newDevLocation').value,
+                priceBase: document.getElementById('newDevPriceBase').value || 'Consultar precio',
+                image: window._newDevImage || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600'
+            };
+            developmentsData.push(newDev);
+            saveDevelopments();
+            ensureAllDevelopmentsHaveProperties();
+            closeDrawer();
+            render();
+            showToast('Fraccionamiento creado');
+        }
+
+        function editDevelopmentDrawer(devName) {
+            const dev = developmentsData.find(d => d.name === devName);
+            if(!dev) return;
+            window._editDevOriginalName = dev.name;
+            window._editDevImage = dev.image;
+            const formHtml = `<div class="form-scroll"><div class="form-group"><label>Nombre</label><input type="text" id="devName" class="form-control" value="${dev.name}" required></div><div class="form-group"><label>Ubicación</label><input type="text" id="devLocation" class="form-control" value="${dev.location}"></div><div class="form-group"><label>Precio Base</label><input type="text" id="devPriceBase" class="form-control" value="${dev.priceBase}"></div><div class="form-group"><label>Imagen del banner</label><div id="devDropzone" class="dropzone">📸 Arrastra o haz clic para cambiar imagen</div><input type="file" id="devFileInput" accept="image/*" style="display:none;"><div id="devPreview" style="margin-top:10px;">${dev.image ? `<img src="${dev.image}" style="height:100px;border-radius:12px;">` : ''}</div></div></div><div class="form-footer"><button type="button" class="btn-primary" onclick="saveDevelopmentFromDrawer()">Guardar Cambios</button></div>`;
+            openDrawer(`Editar: ${dev.name}`, formHtml, false);
+            const dropzone = document.getElementById('devDropzone');
+            const fileInput = document.getElementById('devFileInput');
+            if(dropzone) {
+                dropzone.addEventListener('click', () => fileInput.click());
+                dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+                dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+                dropzone.addEventListener('drop', (e) => { e.preventDefault(); dropzone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+            }
+            if(fileInput) fileInput.addEventListener('change', (e) => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+            function handleFile(file) { const reader = new FileReader(); reader.onload = (ev) => { window._editDevImage = ev.target.result; document.getElementById('devPreview').innerHTML = `<img src="${ev.target.result}" style="height:100px;border-radius:12px;">`; }; reader.readAsDataURL(file); }
+        }
+
+        function saveDevelopmentFromDrawer() {
+            const newName = document.getElementById('devName').value.trim();
+            if(!newName) return showToast('El nombre es obligatorio');
+            const oldName = window._editDevOriginalName;
+            const dev = developmentsData.find(d => d.name === oldName);
+            if(!dev) return showToast('Error: fraccionamiento no encontrado');
+            dev.name = newName;
+            dev.location = document.getElementById('devLocation').value.trim() || dev.location;
+            dev.priceBase = document.getElementById('devPriceBase').value.trim() || dev.priceBase;
+            dev.image = window._editDevImage || dev.image;
+            if(oldName !== dev.name) {
+                properties.forEach(p => { if(p.location === oldName) p.location = dev.name; });
+                if(currentDevelopmentId === oldName) currentDevelopmentId = dev.name;
+            }
+            saveDevelopments();
+            saveData();
+            closeDrawer();
+            render();
+            showToast('✅ Fraccionamiento actualizado');
+        }
+
+        function renderAvgChart() { const ctx = document.getElementById('avgPriceChart'); if(!ctx) return; const labels = developmentsData.map(d => d.name); const data = developmentsData.map(d => { const devProps = properties.filter(p => p.location === d.name); return devProps.length ? devProps.reduce((s,p)=>s+p.price,0)/devProps.length : 0; }); new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ label: 'Precio promedio', data, backgroundColor: 'rgba(198,161,91,0.6)' }] }, options: { responsive: true, plugins: { legend: { display: false } } } }); }
+
+        function openDevelopment(devName) { currentDevelopmentId = devName; render(); }
+        function openAddPropertyDrawer() { currentEditProperty = null; pendingImagesArray = []; openDrawer('Nueva propiedad', renderPropertyFormContent(null), true); }
+        function editPropertyDrawer(propId) { const prop = properties.find(p => p.id === propId); if(prop) { currentEditProperty = prop; pendingImagesArray = (prop.images && prop.images.length) ? prop.images.map(img => ({ src: img.src, category: img.category })) : []; openDrawer('Editar propiedad', renderPropertyFormContent(prop), true); } }
+        function deleteProperty(id) { if(confirm('¿Eliminar propiedad?')) { properties = properties.filter(p => p.id !== id); saveData(); render(); showToast('Eliminada'); } }
+
+        function openDrawer(title, formHtml, isProperty = true) {
+            if (activeDrawer) {
+                if (activeDrawer.overlay.parentNode) activeDrawer.overlay.remove();
+                if (activeDrawer.drawer.parentNode) activeDrawer.drawer.remove();
+                activeDrawer = null;
+                document.body.style.overflow = '';
+            }
+            const overlay = document.createElement('div'); overlay.className = 'drawer-overlay';
+            const drawer = document.createElement('div'); drawer.className = 'drawer';
+            drawer.innerHTML = `<div class="drawer-header"><h3>${title}</h3><button class="drawer-close" onclick="closeDrawer()">✕</button></div><div class="drawer-body"><form id="drawerForm">${formHtml}</form></div>`;
+            document.body.appendChild(overlay);
+            document.body.appendChild(drawer);
+            document.body.style.overflow = 'hidden';
+
+            const scrollArea = drawer.querySelector('.form-scroll');
+            if (scrollArea) {
+                scrollArea.style.overflowY = 'auto';
+                scrollArea.style.maxHeight = '100%';
+                scrollArea.style.pointerEvents = 'auto';
+                scrollArea.style.overscrollBehavior = 'contain';
+                scrollArea.addEventListener('wheel', (e) => { e.stopPropagation(); }, { passive: true });
+                scrollArea.addEventListener('touchmove', (e) => { e.stopPropagation(); }, { passive: true });
+            }
+
+            setTimeout(() => {
+                overlay.classList.add('active');
+                drawer.classList.add('active');
+            }, 10);
+
+            activeDrawer = { overlay, drawer };
+
+            if (isProperty) {
+                attachDrawerEvents();
+            }
+        }
+
+        function closeDrawer() { if(activeDrawer) { activeDrawer.overlay.classList.remove('active'); activeDrawer.drawer.classList.remove('active'); setTimeout(() => { activeDrawer.overlay.remove(); activeDrawer.drawer.remove(); activeDrawer = null; document.body.style.overflow = ''; }, 300); } }
+
+        const IMAGE_CATEGORIES = ['fachada', 'sala', 'cocina', 'comedor', 'recámara principal', 'baño principal', 'recámaras secundarias', 'patio', 'amenidades'];
+
+        function renderPropertyFormContent(prop) {
+            const isEdit = !!prop;
+            const devOptions = developmentsData.map(d => `<option value="${d.name}" ${prop && prop.location === d.name ? 'selected' : ''}>${d.name}</option>`).join('');
+            return `<div class="form-scroll">
+                <div class="form-group"><label>Nombre</label><input type="text" id="propName" class="form-control" value="${prop ? prop.name : ''}" required></div>
+                <div class="form-group"><label>Fraccionamiento</label><select id="propLocation" class="form-control" required>${devOptions}</select></div>
+                <div class="form-group"><label>Precio (MXN)</label><input type="number" id="propPrice" class="form-control" value="${prop ? prop.price : ''}" required></div>
+                <div class="form-group"><label>Descripción</label><textarea id="propDesc" class="form-control" rows="3">${prop ? prop.description : ''}</textarea></div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Recámaras</label><input type="number" id="propBedrooms" class="form-control" value="${prop ? prop.bedrooms : 3}"></div>
+                    <div class="form-group"><label>Baños</label><input type="number" id="propBathrooms" class="form-control" step="0.5" value="${prop ? prop.bathrooms : 2}"></div>
+                    <div class="form-group"><label>Estacionamiento</label><input type="number" id="propParking" class="form-control" value="${prop ? prop.parking : 2}"></div>
+                    <div class="form-group"><label>Construcción (m²)</label><input type="number" id="propBuildSize" class="form-control" value="${prop ? prop.buildSize : 280}"></div>
+                </div>
+                <div class="form-group" style="margin-top:20px;">
+                    <label>Imágenes · Mínimo 3 · Asigna categoría a cada una</label>
+                    <div id="dropzone" class="dropzone">
+                        <div style="text-align:center;">
+                            <div style="font-size:24px;margin-bottom:6px;">📸</div>
+                            <div style="font-weight:600;color:var(--gold-dark);">Arrastra o haz clic para subir</div>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Mínimo 3 imágenes · JPG, PNG, WEBP</div>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
+                    <div id="imagesPreview" class="images-preview-grid"></div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button type="button" class="btn-primary" onclick="savePropertyFromDrawer()">${isEdit ? '✅ Guardar Cambios' : '✨ Crear Propiedad'}</button>
+            </div>`;
+        }
+
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width, height = img.height;
+                    const maxDim = 800;
+                    if (width > height && width > maxDim) { height = (height * maxDim) / width; width = maxDim; }
+                    else if (height > maxDim) { width = (width * maxDim) / height; height = maxDim; }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    canvas.toBlob((blob) => {
+                        if (blob && blob.size > 0) {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve(reader.result);
+                            reader.readAsDataURL(blob);
+                        } else {
+                            canvas.toBlob((blob2) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.readAsDataURL(blob2); }, 'image/jpeg', 0.5);
+                        }
+                    }, 'image/webp', 0.5);
+                };
+                img.onerror = reject;
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        async function savePropertyFromDrawer() {
+            const name = document.getElementById('propName')?.value?.trim();
+            const location = document.getElementById('propLocation')?.value;
+            const price = parseInt(document.getElementById('propPrice')?.value);
+            const description = document.getElementById('propDesc')?.value;
+            const bedrooms = parseInt(document.getElementById('propBedrooms')?.value) || 3;
+            const bathrooms = parseFloat(document.getElementById('propBathrooms')?.value) || 2;
+            const parking = parseInt(document.getElementById('propParking')?.value) || 2;
+            const buildSize = parseInt(document.getElementById('propBuildSize')?.value) || 280;
+            if (!name) { showToast('El nombre es obligatorio'); return; }
+            if (!price || isNaN(price)) { showToast('El precio es obligatorio'); return; }
+
+            let finalImages;
+            if (pendingImagesArray.length) {
+                finalImages = pendingImagesArray.map(img => ({ src: img.src, category: img.category }));
+            } else {
+                finalImages = (currentEditProperty?.images || []).map(img => ({ src: img.src, category: img.category }));
+            }
+            if (finalImages.length < 3) { showToast('Se requieren mínimo 3 imágenes'); return; }
+
+            const processedImages = [];
+            for (let i = 0; i < finalImages.length; i++) {
+                const img = finalImages[i];
+                if (img.src && img.src.startsWith('data:')) {
+                    const imgId = `prop_${currentEditProperty ? currentEditProperty.id : 'new'}_${Date.now()}_${i}_${Math.random().toString(36).slice(2,8)}`;
+                    await storeImageInDB(imgId, img.src);
+                    processedImages.push({ src: imgId, category: img.category });
+                } else {
+                    processedImages.push({ src: img.src, category: img.category });
+                }
+            }
+
+            const newPropId = currentEditProperty ? currentEditProperty.id : `prop_${Date.now()}_${Math.random().toString(36).slice(2,10)}`;
+            const newProp = {
+                id: newPropId,
+                name, location, price, description, bedrooms, bathrooms, parking,
+                buildSize, landSize: 500,
+                images: processedImages,
+                amenities: currentEditProperty ? (currentEditProperty.amenities || ['Jardín privado', 'Cocina integral', 'Terraza', 'Alberca']) : ['Jardín privado', 'Cocina integral', 'Terraza panorámica', 'Alberca'],
+                featured: currentEditProperty ? currentEditProperty.featured : false,
+                status: 'disponible'
+            };
+
+            if (currentEditProperty) {
+                const idx = properties.findIndex(p => p.id === currentEditProperty.id);
+                if (idx !== -1) properties[idx] = newProp;
+            } else { properties.push(newProp); }
+
+            for (const img of processedImages) {
+                if (!img.src.startsWith('data:') && !imageCache.has(img.src)) {
+                    const dataUrl = await getImageFromDB(img.src);
+                    if (dataUrl) imageCache.set(img.src, dataUrl);
+                }
+            }
+
+            saveData();
+            showToast('✅ Propiedad guardada correctamente');
+            closeDrawer();
+            render();
+        }
+
+        function attachDrawerEvents() {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('imagesPreview');
+
+            function updatePreview() {
+                if (!previewContainer) return;
+                previewContainer.innerHTML = '';
+                if (pendingImagesArray.length === 0) {
+                    previewContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:13px;padding:10px 0;">Sin imágenes cargadas todavía</p>';
+                    return;
+                }
+                pendingImagesArray.forEach((item, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'image-preview-item';
+                    const srcDisplay = item.src && item.src.startsWith('data:') ? item.src : getImageSrc(item);
+                    div.innerHTML = `<img src="${srcDisplay}" alt="Preview ${idx+1}">
+                        <button class="remove-image" type="button" data-index="${idx}" title="Eliminar">✕</button>
+                        <select class="image-category-select" data-index="${idx}">
+                            ${IMAGE_CATEGORIES.map(cat => `<option value="${cat}" ${item.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
+                        </select>
+                        ${idx === 0 ? '<div style="position:absolute;bottom:20px;left:4px;background:rgba(198,161,91,0.9);color:white;font-size:8px;padding:2px 6px;border-radius:8px;font-weight:600;z-index:2;">Principal</div>' : ''}`;
+                    previewContainer.appendChild(div);
+                });
+                previewContainer.querySelectorAll('.remove-image').forEach(btn => {
+                    btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const idx = parseInt(btn.dataset.index); pendingImagesArray.splice(idx, 1); updatePreview(); updateDropzoneLabel(); });
+                });
+                previewContainer.querySelectorAll('.image-category-select').forEach(select => {
+                    select.addEventListener('change', (e) => {
+                        const idx = parseInt(e.target.dataset.index);
+                        if (pendingImagesArray[idx]) pendingImagesArray[idx].category = e.target.value;
+                    });
+                });
+            }
+
+            function updateDropzoneLabel() {
+                if (!dropzone) return;
+                const count = pendingImagesArray.length;
+                if (count > 0) {
+                    dropzone.innerHTML = `<div style="text-align:center;"><div style="font-size:24px;margin-bottom:6px;">✅</div><div style="font-weight:600;color:var(--gold-dark);">${count} imagen${count > 1 ? 'es' : ''} cargada${count > 1 ? 's' : ''}</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Haz clic o arrastra para agregar más</div></div>`;
+                } else {
+                    dropzone.innerHTML = `<div style="text-align:center;"><div style="font-size:24px;margin-bottom:6px;">📸</div><div style="font-weight:600;color:var(--gold-dark);">Arrastra o haz clic para subir</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Mínimo 3 imágenes · JPG, PNG, WEBP</div></div>`;
+                }
+            }
+
+            if (dropzone) {
+                dropzone.addEventListener('click', (e) => { e.preventDefault(); fileInput?.click(); });
+                dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+                dropzone.addEventListener('dragleave', (e) => { if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('drag-over'); });
+                dropzone.addEventListener('drop', async (e) => { e.preventDefault(); dropzone.classList.remove('drag-over'); await handleFiles(Array.from(e.dataTransfer.files)); });
+            }
+
+            if (fileInput) { fileInput.addEventListener('change', async (e) => { await handleFiles(Array.from(e.target.files)); e.target.value = ''; }); }
+
+            async function handleFiles(files) {
+                const imageFiles = files.filter(f => f.type.startsWith('image/'));
+                if (!imageFiles.length) { showToast('Solo se permiten imágenes (JPG, PNG, WEBP)'); return; }
+                dropzone.innerHTML = '<div style="text-align:center;padding:10px;">⏳ Comprimiendo imágenes...</div>';
+                try {
+                    const compressed = await Promise.all(imageFiles.map(async file => {
+                        const src = await compressImage(file);
+                        return { src, category: 'fachada' };
+                    }));
+                    pendingImagesArray.push(...compressed);
+                } catch (err) {
+                    showToast('Error al procesar imágenes');
+                    console.error(err);
+                }
+                updatePreview();
+                updateDropzoneLabel();
+            }
+
+            updatePreview();
+            updateDropzoneLabel();
+        }
+
+        // ========== PÚBLICO ==========
+        function renderPublic() { if(currentPage === 'catalog') return renderCatalogPage(); if(currentPage === 'calculator') return renderCalculatorPage(); if(currentPage === 'faq') return renderFAQPage(); return renderHomePage(); }
+        
+        function renderHomePage() {
+            const isMobile = window.innerWidth <= 768;
+            const heroImg = isMobile ? HERO_MOBILE_URL : HERO_DESKTOP_URL;
+            setupHeroResponsive();
+
+            return `<div class="hero-section"><div class="hero-image-container"><img src="${heroImg}" class="hero-video" style="object-fit:cover;"><div class="hero-overlay"></div></div><div class="hero-content"><div class="hero-cta-group"><button class="btn-gold-hero" onclick="openContactModal()"><i class="fab fa-whatsapp"></i> Contactar</button><button class="btn-outline-hero" onclick="navigateTo('catalog')">✨ Ver Propiedades</button></div></div><div class="scroll-indicator" onclick="window.scrollTo({top: window.innerHeight, behavior:'smooth'})"><span>SCROLL</span><div class="line"></div></div></div>
+            <div class="developments-section"><div class="developments-container"><div class="section-header"><div class="section-label">Desarrollos</div><h2 class="section-title">Fraccionamientos <span class="text-gold"></span></h2></div><div class="swiper developments-swiper" id="developmentsSwiper"><div class="swiper-wrapper" id="developmentsWrapper"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div></div>
+            <section class="section-container"><div class="section-header"><div class="section-label">Fraccionamientos Disponibles</div><h2 class="section-title">Residencias <span class="text-gold"></span></h2></div><div class="swiper properties-carousel" id="propertiesCarousel"><div class="swiper-wrapper" id="propertiesCarouselWrapper"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div><div style="text-align:center;margin-top:50px;"><button class="btn-outline-solid" onclick="navigateTo('catalog')">Ver Catálogo Completo →</button></div></section>
+            <section class="section-container"><div class="agent-grid"><div class="agent-image"><img src="erik.png"></div><div><div class="section-label">Tu Asesor de Confianza</div><h2>${siteConfig.adminName}</h2><p style="color:var(--text-secondary);margin-bottom:20px;">Con más de 10 años de trayectoria en el mercado inmobiliario de Ciudad Juárez, ${siteConfig.adminName} es sinónimo de exclusividad y confianza. Su enfoque personalizado y profundo conocimiento de los fraccionamientos garantizan la mejor inversión para tu familia.</p><div class="agent-stats"><div class="agent-stat"><div class="agent-stat-number">358+</div><div>Ventas</div></div><div class="agent-stat"><div class="agent-stat-number">+10</div><div>Años</div></div><div class="agent-stat"><div class="agent-stat-number">312</div><div>Familias</div></div></div><button class="btn-gold-hero" onclick="openContactModal()"><i class="fab fa-whatsapp"></i> Contactar</button></div></div></section>
+            <section class="section-container"><div class="section-header"><div class="section-label">Testimonios</div><h2 class="section-title">Lo que dicen <span class="text-gold">nuestros clientes</span></h2></div><div class="swiper testimonials-swiper" id="testimonialsSwiper"><div class="swiper-wrapper" id="testimonialsWrapper"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></section>`;
+        }
+
+        function renderCatalogPage() { return `<div class="section-container" style="padding-top:110px;"><div class="section-header"><div class="section-label">Catálogo Completo</div><h2 class="section-title">Nuestras Propiedades</h2></div><div id="catalogBanners"></div></div>`; }
+        function renderCatalogBanners() { const container = document.getElementById('catalogBanners'); if(!container) return; container.innerHTML = developmentsData.map(dev => { const devProps = properties.filter(p => p.location === dev.name); return `<div class="dev-banner"><img src="${dev.image}" loading="lazy"><div class="dev-banner-content"><h3>${dev.name}</h3><div class="dev-price-badge">${dev.priceBase}</div></div></div><div class="dev-properties-row">${devProps.map(p => renderPropertyCard(p)).join('')}</div>`; }).join(''); gsap.fromTo('.property-card', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }); }
+        function renderPropertyCard(p) {
+            const imgSrc = (p.images && p.images.length > 0) ? getImageSrc(p.images[0]) : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800';
+            return `<div class="property-card" onclick="openPropertyModal('${p.id}')"><img src="${imgSrc}" class="property-card-image" loading="lazy"><div class="property-card-content"><div class="property-price">$${p.price.toLocaleString('es-MX')} MXN</div><h3>${p.name}</h3><div class="property-specs"><span><i class="fas fa-ruler-combined"></i> ${p.buildSize}m²</span><span><i class="fas fa-bed"></i> ${p.bedrooms}</span><span><i class="fas fa-bath"></i> ${p.bathrooms}</span><span><i class="fas fa-car"></i> ${p.parking}</span></div><div class="property-buttons"><button class="btn-wa" onclick="event.stopPropagation();openContactModal('${p.name}')"><i class="fab fa-whatsapp"></i> WhatsApp</button><button class="btn-details" onclick="event.stopPropagation();openPropertyModal('${p.id}')">Ver detalles →</button></div></div></div>`;
+        }
+
+        function renderCalculatorPage() { return `<div class="section-container" style="padding-top:110px;"><div class="section-header"><div class="section-label">Herramienta Financiera</div><h2 class="section-title">Calculadora <span class="text-gold">Hipotecaria</span></h2></div><div class="calculator-card"><div><label>💰 Precio (MXN)</label><input type="number" id="calcPrice" class="calculator-input" value="5000000" oninput="calculateMortgage()"></div><div><label>🏦 Enganche (%)</label><input type="number" id="calcDown" class="calculator-input" value="20" oninput="calculateMortgage()"></div><div><label>📈 Tasa Anual (%)</label><input type="number" id="calcRate" class="calculator-input" value="10.5" step="0.1" oninput="calculateMortgage()"></div><div><label>⏱️ Plazo (años)</label><input type="number" id="calcYears" class="calculator-input" value="20" oninput="calculateMortgage()"></div><div class="calculator-result" id="calcResult"><div class="monthly">$0</div><div>PAGO MENSUAL</div></div></div></div>`; }
+        function renderFAQPage() { return `<div class="section-container" style="padding-top:110px;"><div class="section-header"><div class="section-label">Preguntas Frecuentes</div><h2 class="section-title">Resolvemos tus <span class="text-gold">dudas</span></h2></div><div class="faq-grid">${[{q:'¿Cómo inicio el proceso de compra?',a:'Agenda una consulta gratuita por WhatsApp.'},{q:'¿Ofrecen financiamiento?',a:'Sí, trabajamos con Infonavit, Cofinavit y bancos.'},{q:'¿Puedo agendar una visita virtual?',a:'Ofrecemos recorridos virtuales en vivo.'},{q:'¿Cuánto tiempo toma el proceso?',a:'Promedio de 30 a 45 días.'}].map(f=>`<div class="faq-item" onclick="this.classList.toggle('active')"><div class="faq-question"><span>${f.q}</span><span class="faq-icon">+</span></div><div class="faq-answer">${f.a}</div></div>`).join('')}</div><div style="text-align:center;margin-top:40px;"><button class="btn-gold-hero" onclick="openContactModal()"><i class="fab fa-whatsapp"></i> ¿Más dudas?</button></div></div>`; }
+
+        function loadDevelopments() { const wrapper = document.getElementById('developmentsWrapper'); if(!wrapper) return; wrapper.innerHTML = developmentsData.map(d => `<div class="swiper-slide"><div class="development-card"><div class="development-image"><img src="${d.image}"></div><div class="development-content"><h3>${d.name}</h3><div class="development-location"><i class="fas fa-map-marker-alt"></i> ${d.location}</div><div class="development-price">${d.priceBase}</div><div class="development-features"><span><i class="fas fa-home"></i> ${properties.filter(p=>p.location===d.name).length} propiedades</span><span><i class="fas fa-shield-alt"></i> Seguridad 24/7</span></div><button class="btn-dev" onclick="navigateTo('catalog')">Ver propiedades</button></div></div></div>`).join(''); new Swiper('#developmentsSwiper', { slidesPerView: 1, spaceBetween: 20, loop: true, autoplay: { delay: 4000 }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } } }); }
+        function loadPropertiesCarousel() { const wrapper = document.getElementById('propertiesCarouselWrapper'); if(!wrapper) return; const validProps = properties.filter(p => p.images && p.images.length > 0); const showProps = validProps.length >= 3 ? validProps.slice(0,6) : properties.slice(0,6); wrapper.innerHTML = showProps.map(p => `<div class="swiper-slide">${renderPropertyCard(p)}</div>`).join(''); new Swiper('#propertiesCarousel', { slidesPerView: 1, spaceBetween: 20, loop: true, autoplay: { delay: 3500 }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } } }); gsap.fromTo('.property-card', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.7, stagger:0.15, scrollTrigger: { trigger: '#propertiesCarousel', start: 'top 90%' } }); }
+        function loadTestimonials() { const wrapper = document.getElementById('testimonialsWrapper'); if(!wrapper) return; const testimonials = [ {name:'Familia Rodríguez',text:'Javier nos ayudó a encontrar la casa de nuestros sueños. Su profesionalismo fue invaluable.',image:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100'}, {name:'Carlos Mendoza',text:'El proceso de compra fue increíblemente fluido. Javier es un verdadero experto.',image:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100'}, {name:'Ana Laura Vega',text:'No podría estar más feliz con mi nueva propiedad. Javier superó todas mis expectativas.',image:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100'}, {name:'Ricardo Sánchez',text:'Una experiencia de compra inigualable. Javier conoce el mercado como nadie.',image:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'}, {name:'María Fernández',text:'Profesionalismo absoluto. Encontré la casa perfecta para mi familia.',image:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100'} ]; wrapper.innerHTML = testimonials.map(t => `<div class="swiper-slide"><div class="testimonial-card"><div class="testimonial-header"><img src="${t.image}" class="testimonial-avatar"><div><div class="testimonial-name">${t.name}</div><div class="testimonial-stars">★★★★★</div></div></div><p class="testimonial-text">"${t.text}"</p></div></div>`).join(''); new Swiper('#testimonialsSwiper', { slidesPerView: 1, spaceBetween: 20, loop: true, speed: 4000, autoplay: { delay: 0, disableOnInteraction: false }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } } }); gsap.fromTo('.testimonial-card', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.6, stagger:0.2, scrollTrigger: { trigger: '#testimonialsSwiper', start: 'top 80%' } }); }
+
+        // ========== MODAL DE PROPIEDAD (SIN CAMBIOS) ==========
+        function openPropertyModal(id) {
+            const p = properties.find(x => x.id === id);
+            if(!p) return;
+            if (lenis) lenis.stop();
+
+            const imagesToShow = (p.images && p.images.length > 0) ? p.images.map(img => getImageSrc(img)) : ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800'];
+            const modalHtml = `
+            <div id="propertyModal" class="lightbox-overlay active" onclick="if(event.target===this) closeModal()">
+                <div class="modal-container">
+                    <button class="modal-close" onclick="closeModal()">✕</button>
+                    <div class="modal-gallery">
+                        <div class="swiper propertySwiperModal" style="width:100%; height:100%;">
+                            <div class="swiper-wrapper">
+                                ${imagesToShow.map(img => `<div class="swiper-slide"><img src="${img}" style="width:100%;height:100%;object-fit:cover;"></div>`).join('')}
+                            </div>
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="modal-details" data-lenis-prevent>
+                        <div class="modal-property-name">${p.name}</div>
+                        <div class="modal-property-price">$${p.price.toLocaleString('es-MX')} MXN</div>
+                        <p class="modal-property-desc">${p.description}</p>
+                        <div class="modal-specs-grid">
+                            <div class="modal-spec-card"><i class="fas fa-ruler-combined"></i> <span>${p.buildSize} m²</span></div>
+                            <div class="modal-spec-card"><i class="fas fa-bed"></i> <span>${p.bedrooms} recámaras</span></div>
+                            <div class="modal-spec-card"><i class="fas fa-bath"></i> <span>${p.bathrooms} baños</span></div>
+                            <div class="modal-spec-card"><i class="fas fa-car"></i> <span>${p.parking} cajones</span></div>
+                        </div>
+                        <div class="modal-amenities-title">Amenidades</div>
+                        <div class="modal-amenities-list">
+                            ${p.amenities.map(a => `<span class="modal-amenity-badge">${a}</span>`).join('')}
+                        </div>
+                        <button class="btn-gold-hero" style="width:100%; margin-top:8px;" onclick="openContactModal('${p.name}');closeModal();"><i class="fab fa-whatsapp"></i> Contactar por WhatsApp</button>
+                    </div>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            new Swiper('.propertySwiperModal', { 
+                slidesPerView: 1, 
+                pagination: { el: '.swiper-pagination' }, 
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } 
+            });
+        }
+
+        function closeModal() { 
+            document.getElementById('propertyModal')?.remove();
+            if (lenis) lenis.start();
+        }
+
+        function calculateMortgage() { const price = parseFloat(document.getElementById('calcPrice')?.value)||5000000; const down = parseFloat(document.getElementById('calcDown')?.value)||20; const rate = parseFloat(document.getElementById('calcRate')?.value)||10.5; const years = parseFloat(document.getElementById('calcYears')?.value)||20; const loan = price*(1-down/100); const mr=rate/100/12; const n=years*12; let payment = mr>0?loan*(mr*Math.pow(1+mr,n))/(Math.pow(1+mr,n)-1):loan/n; const el=document.getElementById('calcResult'); if(el) el.innerHTML=`<div class="monthly">$${Math.round(payment).toLocaleString('es-MX')}</div><div>PAGO MENSUAL ESTIMADO</div>`; }
+        function attachEvents() { if(currentPage === 'catalog') renderCatalogBanners(); if(currentPage === 'calculator') calculateMortgage(); if(currentPage === 'home') { loadDevelopments(); loadTestimonials(); loadPropertiesCarousel(); window.addEventListener('scroll', updateNavbarGlass); } else window.removeEventListener('scroll', updateNavbarGlass); }
+        function animateEntrance() { if(!window.gsap) return; gsap.fromTo('.hero-content', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.3 }); gsap.utils.toArray('.section-header').forEach(h => gsap.fromTo(h, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, scrollTrigger: { trigger: h, start: "top 85%" } })); }
+
+        const cursorEl = document.getElementById('customCursor'), trailEl = document.getElementById('customCursorTrail');
+        if(cursorEl && window.innerWidth >= 1024) {
+            window.addEventListener('mousemove', (e) => { cursorEl.style.left = e.clientX + 'px'; cursorEl.style.top = e.clientY + 'px'; trailEl.style.left = e.clientX + 'px'; trailEl.style.top = e.clientY + 'px'; });
+            document.querySelectorAll('a, button, .property-card').forEach(el => { el.addEventListener('mouseenter', () => { cursorEl.classList.add('hover'); trailEl.classList.add('hover'); }); el.addEventListener('mouseleave', () => { cursorEl.classList.remove('hover'); trailEl.classList.remove('hover'); }); });
+        }
+
+        window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if(navbar) window.scrollY > 50 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled'); updateNavbarGlass(); });
+        let progress = 0; const loaderInterval = setInterval(() => { progress += Math.random() * 20; if(progress >= 100) { progress = 100; clearInterval(loaderInterval); } document.getElementById('loaderBar')?.setAttribute('style', `width: ${Math.min(progress,100)}%`); }, 150);
+        window.addEventListener('load', () => { setTimeout(() => { gsap.to('#luxuryLoader', { opacity: 0, duration: 0.8, onComplete: () => document.getElementById('luxuryLoader')?.remove() }); }, 500); });
+
+        function handleMenuCloseButton() { const closeBtn = document.querySelector('.nav-links .close-menu'); if (!closeBtn) return; closeBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none'; }
+        window.addEventListener('resize', handleMenuCloseButton);
+        handleMenuCloseButton();
+
+        document.getElementById('whatsappFloat')?.addEventListener('click', () => openContactModal());
+        document.getElementById('hamburger')?.addEventListener('click', () => document.getElementById('navLinks')?.classList.toggle('active'));
+
+        document.addEventListener('click', (e) => { if(e.target.closest('#adminMenuToggle')) document.getElementById('adminSidebar')?.classList.toggle('open'); });
+
+      (async function initApp() {
+    try {
+        await openDB();
+        await loadAllImagesIntoCache();
+
+        // Migrar imágenes antiguas (strings → objetos)
+        for (const p of properties) {
+            if (p.images && p.images.length && typeof p.images[0] === 'string') {
+                const migrated = [];
+                for (let i = 0; i < p.images.length; i++) {
+                    const img = p.images[i];
+                    if (img.src && img.src.startsWith('data:')) {
+                        const imgId = `prop_${p.id}_legacy_${i}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+                        await storeImageInDB(imgId, img.src);
+                        migrated.push({ src: imgId, category: img.category });
+                    } else { migrated.push(img); }
+                }
+                p.images = migrated;
+            }
+        }
+        saveData(); // guarda la migración
+
+        // Cargar datos del backend solo si hay token y el servidor devuelve contenido real
+        if (authToken) {
+            try {
+                const [devs, props, lds] = await Promise.all([
+                    apiRequest('/api/developments').catch(() => []),
+                    apiRequest('/api/properties').catch(() => []),
+                    apiRequest('/api/leads').catch(() => [])
+                ]);
+
+                // Solo reemplazar si el backend tiene al menos un elemento (evita borrar datos locales)
+                if (Array.isArray(devs) && devs.length > 0) {
+                    developmentsData = devs;
+                    saveDevelopments();
+                }
+                if (Array.isArray(props) && props.length > 0) {
+                    properties = props;
+                }
+                if (Array.isArray(lds) && lds.length > 0) {
+                    leads = lds;
+                }
+                saveData(); // guarda cambios en localStorage
+            } catch (e) {
+                console.warn('No se pudo sincronizar con el backend, se mantienen los datos locales', e);
+            }
+        }
+
+        // Asegurar que todos los fraccionamientos tengan propiedades (si faltan, las genera)
+        ensureAllDevelopmentsHaveProperties();
+        applySiteConfig();
+        render();
+    } catch (e) {
+        console.warn('IndexedDB init error', e);
+    }
+})();
+
+        window.navigateTo = navigateTo; window.trackWhatsApp = trackWhatsApp; window.openContactModal = openContactModal; window.openPropertyModal = openPropertyModal; window.closeModal = closeModal;
+        window.editPropertyDrawer = editPropertyDrawer; window.deleteProperty = deleteProperty; window.setAdminSection = setAdminSection; window.doLogin = doLogin;
+        window.calculateMortgage = calculateMortgage; window.logoutAdmin = logoutAdmin; window.closeDrawer = closeDrawer; window.openDevelopment = openDevelopment;
+        window.editDevelopmentDrawer = editDevelopmentDrawer; window.openAddPropertyDrawer = openAddPropertyDrawer; window.toggleWhatsappChat = toggleWhatsappChat;
+        window.sendWhatsappMessage = sendWhatsappMessage; window.addNewDevelopment = addNewDevelopment; window.saveSiteConfig = saveSiteConfig;
+        window.goBackToDevelopments = goBackToDevelopments;
+        window.savePropertyFromDrawer = savePropertyFromDrawer;
+        window.saveDevelopmentFromDrawer = saveDevelopmentFromDrawer;
+        window.saveNewDevelopment = saveNewDevelopment;
+        window.deleteLead = deleteLead;
+        window.submitContactForm = submitContactForm;
+
+        render();
+    </script>
+</body>
+</html>

@@ -1,19 +1,11 @@
-const Property = require("./Property");
+const mongoose = require("mongoose");
 
-// GET
-exports.getProperties = async (req, res) => {
-  const data = await Property.find();
-  res.json(data);
-};
+const propertySchema = new mongoose.Schema({
+  name: String,
+  price: Number,
+  location: String,
+  description: String,
+  images: [String]
+});
 
-// POST
-exports.createProperty = async (req, res) => {
-  const newProperty = await Property.create(req.body);
-  res.json(newProperty);
-};
-
-// DELETE
-exports.deleteProperty = async (req, res) => {
-  await Property.findByIdAndDelete(req.params.id);
-  res.json({ message: "Eliminada" });
-};
+module.exports = mongoose.model("Property", propertySchema);
