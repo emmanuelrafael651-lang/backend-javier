@@ -647,7 +647,6 @@
                     });
                 }
             }
-            localStorage.setItem('javier_properties', JSON.stringify(properties));
         }
 
         function migratePropertyImagesLegacy() {
@@ -722,16 +721,55 @@
 
         function showToast(msg) { let t = document.getElementById('toast'); if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); } }
 
-        function saveData() {
-            localStorage.setItem('javier_properties', JSON.stringify(properties));
-            localStorage.setItem('javier_leads', JSON.stringify(leads));
-            localStorage.setItem('javier_site_config', JSON.stringify(siteConfig));
-            if (authToken) {
-                apiRequest('/api/properties', { method: 'POST', body: JSON.stringify(properties) }).catch(() => {});
-                apiRequest('/api/leads', { method: 'POST', body: JSON.stringify(leads) }).catch(() => {});
-                apiRequest('/api/developments', { method: 'POST', body: JSON.stringify(developmentsData) }).catch(() => {});
+        async function saveData() {
+    try {
+        // 🔥 SOLO BACKEND (NO localStorage)
+        
+        if (authToken) {
+
+            // Propiedades (mejor: una por una si tienes nuevas)
+            for (const property of properties) {
+                if (!property._id) {
+                    await apiRequest('/api/properties', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(property)
+                    });
+                }
             }
+
+            // Leads
+            for (const lead of leads) {
+                if (!lead._id) {
+                    await apiRequest('/api/leads', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(lead)
+                    });
+                }
+            }
+
+            // Developments
+            for (const dev of (developmentsData || [])) {
+                if (!dev._id) {
+                    await apiRequest('/api/developments', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(dev)
+                    });
+                }
+            }
+
         }
+
+        console.log("✅ Datos sincronizados con backend");
+        showToast("Datos guardados correctamente");
+
+    } catch (error) {
+        console.log("❌ Error en saveData:", error);
+        showToast("Error al guardar datos");
+    }
+}
 
         function applySiteConfig() {
             const logoEl = document.getElementById('navbarLogo');
