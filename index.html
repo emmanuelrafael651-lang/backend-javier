@@ -700,7 +700,7 @@
 
         let leads = JSON.parse(localStorage.getItem('javier_leads')) || [];
         let currentPage = 'home';
-        let isAdmin = localStorage.getItem('admin_auth') === 'true';
+        let isAdmin = !!localStorage.getItem('admin_token');
         let adminSection = 'dashboard';
         let currentDevelopmentId = null;
         let currentEditProperty = null;
@@ -740,6 +740,7 @@
             if (authToken) {
                 apiRequest('/api/properties', { method: 'POST', body: JSON.stringify(properties) }).catch(() => {});
                 apiRequest('/api/leads', { method: 'POST', body: JSON.stringify(leads) }).catch(() => {});
+                apiRequest('/api/developments', { method: 'POST', body: JSON.stringify(developmentsData) }).catch(() => {});
             }
         }
 
@@ -835,40 +836,44 @@
 
         function renderLogin() { return `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-deep);"><div style="background:var(--bg-card);padding:40px;border-radius:32px;width:360px;border:1px solid var(--border-subtle);"><h2 style="margin-bottom:20px;text-align:center;">Acceso Ejecutivo</h2><input id="adminUser" placeholder="Usuario" style="width:100%;padding:12px;margin-bottom:12px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-subtle);"><input id="adminPass" type="password" placeholder="Contraseña" style="width:100%;padding:12px;margin-bottom:20px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-subtle);"><button class="btn-gold-hero" style="width:100%;" onclick="doLogin()">Ingresar</button></div></div>`; }
 
-    async function doLogin() {
+        // ========== LOGIN CORREGIDO ==========
+        async function doLogin() {
+            const u = document.getElementById('adminUser')?.value.trim();
+            const p = document.getElementById('adminPass')?.value.trim();
+            if (!u || !p) return showToast('Ingresa usuario y contraseña');
 
-    const u = document.getElementById('adminUser')?.value.trim();
-    const p = document.getElementById('adminPass')?.value.trim();
-
-    if (!u || !p) {
-        return showToast('Ingresa usuario y contraseña');
-    }
-
-    // LOGIN LOCAL TEMPORAL
-    if (u === 'erikzon' && p === 'itziron123') {
-
-        localStorage.setItem('admin_auth', 'true');
-
-        isAdmin = true;
-        currentPage = 'admin';
-        adminSection = 'dashboard';
-        currentDevelopmentId = null;
-
-        render();
-
-        showToast('✅ Login correcto');
-
-    } else {
-
-        showToast('❌ Credenciales incorrectas');
-
-    }
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    authToken = data.token;
+                    localStorage.setItem('admin_token', authToken);
+                    isAdmin = true;
+                    currentPage = 'admin';
+                    adminSection = 'dashboard';
+                    currentDevelopmentId = null;
+                    render();
+                    showToast('✅ Conectado al backend');
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    showToast(`❌ ${errorData.message || 'Credenciales incorrectas'}`);
+                }
+ } catch (networkError) {
+console.error(networkError);
+showToast('❌ No se pudo conectar al servidor');
+}
 }
 
-        
-
-        function logoutAdmin() { localStorage.removeItem('admin_auth'); localStorage.removeItem('admin_token'); authToken = null; window.location.href = window.location.pathname; }
-
+function logoutAdmin() {
+    localStorage.removeItem('admin_token');
+    authToken = null;
+    isAdmin = false;
+    window.location.href = window.location.pathname;
+}
         function toggleWhatsappChat() { document.getElementById('whatsappChat').classList.toggle('open'); }
         function addWAMessage(text, sender) { const body = document.getElementById('whatsappBody'); if(!body) return; const div = document.createElement('div'); div.className = `chat-message ${sender}`; div.textContent = text; body.appendChild(div); body.scrollTop = body.scrollHeight; }
         function sendWhatsappMessage() {
@@ -1055,7 +1060,21 @@
             }
         }
 
-        function closeDrawer() { if(activeDrawer) { activeDrawer.overlay.classList.remove('active'); activeDrawer.drawer.classList.remove('active'); setTimeout(() => { activeDrawer.overlay.remove(); activeDrawer.drawer.remove(); activeDrawer = null; document.body.style.overflow = ''; }, 300); } }
+        function closeDrawer() {
+            if(activeDrawer) {
+                activeDrawer.overlay.classList.remove('active');
+                activeDrawer.drawer.classList.remove('active');
+                setTimeout(() => {
+                    activeDrawer.overlay.remove();
+                    activeDrawer.drawer.remove();
+                    activeDrawer = null;
+                    document.body.style.overflow = '';
+                    // LIMPIAR ESTADO para evitar mezcla de imágenes entre propiedades
+                    currentEditProperty = null;
+                    pendingImagesArray = [];
+                }, 300);
+            }
+        }
 
         const IMAGE_CATEGORIES = ['fachada', 'sala', 'cocina', 'comedor', 'recámara principal', 'baño principal', 'recámaras secundarias', 'patio', 'amenidades'];
 
@@ -1359,62 +1378,52 @@
 
         document.addEventListener('click', (e) => { if(e.target.closest('#adminMenuToggle')) document.getElementById('adminSidebar')?.classList.toggle('open'); });
 
-      (async function initApp() {
-    try {
-        await openDB();
-        await loadAllImagesIntoCache();
-
-        // Migrar imágenes antiguas (strings → objetos)
-        for (const p of properties) {
-            if (p.images && p.images.length && typeof p.images[0] === 'string') {
-                const migrated = [];
-                for (let i = 0; i < p.images.length; i++) {
-                    const img = p.images[i];
-                    if (img.src && img.src.startsWith('data:')) {
-                        const imgId = `prop_${p.id}_legacy_${i}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-                        await storeImageInDB(imgId, img.src);
-                        migrated.push({ src: imgId, category: img.category });
-                    } else { migrated.push(img); }
-                }
-                p.images = migrated;
-            }
-        }
-        saveData(); // guarda la migración
-
-        // Cargar datos del backend solo si hay token y el servidor devuelve contenido real
-        if (authToken) {
+        (async function initApp() {
             try {
-                const [devs, props, lds] = await Promise.all([
-                    apiRequest('/api/developments').catch(() => []),
-                    apiRequest('/api/properties').catch(() => []),
-                    apiRequest('/api/leads').catch(() => [])
-                ]);
+                await openDB();
+                await loadAllImagesIntoCache();
+                for (const p of properties) {
+                    if (p.images && p.images.length && typeof p.images[0] === 'string') {
+                        const migrated = [];
+                        for (let i = 0; i < p.images.length; i++) {
+                            const img = p.images[i];
+                            if (img.src && img.src.startsWith('data:')) {
+                                const imgId = `prop_${p.id}_legacy_${i}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+                                await storeImageInDB(imgId, img.src);
+                                migrated.push({ src: imgId, category: img.category });
+                            } else { migrated.push(img); }
+                        }
+                        p.images = migrated;
+                    }
+                }
+                saveData();
 
-                // Solo reemplazar si el backend tiene al menos un elemento (evita borrar datos locales)
-                if (Array.isArray(devs) && devs.length > 0) {
-                    developmentsData = devs;
-                    saveDevelopments();
+                // Cargar datos del backend si hay token de administrador, pero sin sobrescribir si vienen vacíos
+                if (authToken) {
+                    try {
+                        const [devs, props, lds] = await Promise.all([
+                            apiRequest('/api/developments').catch(() => []),
+                            apiRequest('/api/properties').catch(() => []),
+                            apiRequest('/api/leads').catch(() => [])
+                        ]);
+                        if (Array.isArray(devs) && devs.length > 0) {
+                            developmentsData = devs;
+                            saveDevelopments();
+                        }
+                        if (Array.isArray(props) && props.length > 0) {
+                            properties = props;
+                        }
+                        if (Array.isArray(lds) && lds.length > 0) {
+                            leads = lds;
+                        }
+                        saveData();
+                    } catch (e) { console.warn('Error cargando backend', e); }
                 }
-                if (Array.isArray(props) && props.length > 0) {
-                    properties = props;
-                }
-                if (Array.isArray(lds) && lds.length > 0) {
-                    leads = lds;
-                }
-                saveData(); // guarda cambios en localStorage
-            } catch (e) {
-                console.warn('No se pudo sincronizar con el backend, se mantienen los datos locales', e);
-            }
-        }
-
-        // Asegurar que todos los fraccionamientos tengan propiedades (si faltan, las genera)
-        ensureAllDevelopmentsHaveProperties();
-        applySiteConfig();
-        render();
-    } catch (e) {
-        console.warn('IndexedDB init error', e);
-    }
-})();
+                ensureAllDevelopmentsHaveProperties();
+                applySiteConfig();
+                render();
+            } catch (e) { console.warn('IndexedDB init error', e); }
+        })();
 
         window.navigateTo = navigateTo; window.trackWhatsApp = trackWhatsApp; window.openContactModal = openContactModal; window.openPropertyModal = openPropertyModal; window.closeModal = closeModal;
         window.editPropertyDrawer = editPropertyDrawer; window.deleteProperty = deleteProperty; window.setAdminSection = setAdminSection; window.doLogin = doLogin;
