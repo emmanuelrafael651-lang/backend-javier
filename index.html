@@ -137,8 +137,15 @@
         /* Secciones */
         .section-container { max-width: 1280px; margin: 0 auto; padding: 80px 40px; }
         .section-header { text-align: center; margin-bottom: 60px; opacity: 0; transform: translateY(30px); }
-        .section-label { font-size: 11px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
-        .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 500; margin-bottom: 16px; font-family: 'Playfair Display', serif; color: var(--text-primary); }
+        .section-label { font-size: 13px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
+        .section-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-family: 'Playfair Display', serif;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+        }
         .text-gold { color: var(--gold); }
 
         /* Carrusel fraccionamientos */
@@ -489,20 +496,18 @@
         // ============================================================
         //  🔴 CAMBIA AQUÍ LA IMAGEN DEL HERO PARA CELULAR
         // ============================================================
-        const HERO_MOBILE_URL  = 'c.png';   // ← 🔴 Imagen para celular (cambia 'hero.png' por tu URL)
+        const HERO_MOBILE_URL  = 'c.png';
 
         // ============================================================
         //  🔵 CAMBIA AQUÍ LA IMAGEN DEL HERO PARA COMPUTADORA
         // ============================================================
-        const HERO_DESKTOP_URL = 'hero.png';   // ← 🔵 Imagen para computadora (cambia 'hero.png' por tu URL)
+        const HERO_DESKTOP_URL = 'hero.png';
 
         // ============ CONFIGURACIÓN INICIAL ============
         let siteConfig = JSON.parse(localStorage.getItem('javier_site_config')) || { 
             adminName: 'Javier Estrada', 
             adminTitle: 'Executive', 
             logoUrl: ''
-            // Las URLs del hero NO se guardan en localStorage.
-            // Siempre se toman de las constantes HERO_MOBILE_URL y HERO_DESKTOP_URL.
         };
 
         // ---- Lenis seguro ----
@@ -520,7 +525,6 @@
                 else if (options.top !== undefined) lenis.scrollTo(options.top, { offset: 0 }); 
             };
         } catch (e) {
-            console.warn('Lenis no disponible, usando scroll nativo');
             window.scrollTo = (options) => {
                 if (typeof options === 'number') window.scrollTo(0, options);
                 else if (options.top !== undefined) window.scrollTo(0, options.top);
@@ -529,23 +533,16 @@
 
         // ========== HERO RESPONSIVE DINÁMICO ==========
         let heroMediaQuery = null;
-
-        // Función que actualiza la imagen del hero según el ancho actual
         function updateHeroImage() {
             const heroImg = document.querySelector('.hero-video');
-            if (!heroImg) return; // No estamos en la página principal
-            const isMobile = window.innerWidth <= 768;
-            heroImg.src = isMobile ? HERO_MOBILE_URL : HERO_DESKTOP_URL;
+            if (!heroImg) return;
+            heroImg.src = (window.innerWidth <= 768) ? HERO_MOBILE_URL : HERO_DESKTOP_URL;
         }
-
-        // Configura el listener para cambios de breakpoint
         function setupHeroResponsive() {
-            if (heroMediaQuery) return; // Evita duplicados
+            if (heroMediaQuery) return;
             heroMediaQuery = window.matchMedia('(max-width: 768px)');
             heroMediaQuery.addEventListener('change', updateHeroImage);
         }
-
-        // Limpia el listener al salir de la página principal
         function cleanupHeroResponsive() {
             if (heroMediaQuery) {
                 heroMediaQuery.removeEventListener('change', updateHeroImage);
@@ -628,14 +625,7 @@
         }
 
         let properties = JSON.parse(localStorage.getItem('javier_properties'));
-        const devCounts = {
-            'Montevalle Residencial': 4,
-            'Cerrada Castaño': 3,
-            'Amberes': 3,
-            'Sendareal': 3,
-            'Cerradas de Santiago': 1,
-            'Rincón del Márquez': 3
-        };
+        const devCounts = { 'Montevalle Residencial': 4, 'Cerrada Castaño': 3, 'Amberes': 3, 'Sendareal': 3, 'Cerradas de Santiago': 1, 'Rincón del Márquez': 3 };
 
         if (!properties || properties.length === 0) {
             properties = [];
@@ -649,7 +639,7 @@
                         id: `${dev.id}-${i}-${Date.now()}-${Math.random().toString(36).slice(2,6)}`,
                         name: `${modelos[(i-1) % modelos.length]} ${dev.name.split(' ')[0]} ${String.fromCharCode(64+i)}`,
                         price, location: dev.name,
-                        description: `Exclusiva propiedad en ${dev.name}. Acabados premium y ubicación privilegiada.`,
+                        description: `Exclusiva propiedad en ${dev.name}.`,
                         buildSize: 280 + i * 20, bedrooms: 3 + (i % 2), bathrooms: 2.5 + (i % 3) * 0.5, parking: 2 + (i % 2),
                         amenities: ['Jardín privado', 'Cocina integral', 'Terraza panorámica', 'Alberca', 'Seguridad 24/7'],
                         featured: i === 1,
@@ -736,7 +726,6 @@
             localStorage.setItem('javier_properties', JSON.stringify(properties));
             localStorage.setItem('javier_leads', JSON.stringify(leads));
             localStorage.setItem('javier_site_config', JSON.stringify(siteConfig));
-            // Sincronizar con backend si hay token de administrador
             if (authToken) {
                 apiRequest('/api/properties', { method: 'POST', body: JSON.stringify(properties) }).catch(() => {});
                 apiRequest('/api/leads', { method: 'POST', body: JSON.stringify(leads) }).catch(() => {});
@@ -762,7 +751,6 @@
         function addLead(name, phone, propertyName) { leads.unshift({ id: Date.now(), name, phone, propertyName, date: new Date().toISOString(), status: 'nuevo' }); saveData(); showToast('✅ Gracias! Javier te contactará pronto'); }
         function deleteLead(id) { leads = leads.filter(l => l.id !== id); saveData(); render(); showToast('Lead eliminado'); }
 
-        // ========== NUEVA FUNCIÓN DE CONTACTO (REEMPLAZA AL ANTIGUO trackWhatsApp) ==========
         function openContactModal(propertyName = '') {
             const existing = document.querySelector('.contact-modal-overlay');
             if (existing) existing.remove();
@@ -798,15 +786,12 @@
             showToast('✅ Redirigiendo a WhatsApp');
         }
 
-        // Se conserva trackWhatsApp para compatibilidad con el chatbot (no se usa en botones)
         function trackWhatsApp(propertyName) { openContactModal(propertyName); }
 
         function smoothPageChange(callback) { if (isTransitioning) return; isTransitioning = true; gsap.to('#mainContent', { opacity: 0, y: 20, duration: 0.35, ease: "power2.in", onComplete: () => { callback(); gsap.fromTo('#mainContent', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", onComplete: () => { isTransitioning = false; } }); } }); }
         function navigateTo(page) { 
             smoothPageChange(() => { 
-                if (currentPage === 'home' && page !== 'home') {
-                    cleanupHeroResponsive();
-                }
+                if (currentPage === 'home' && page !== 'home') cleanupHeroResponsive();
                 currentPage = page; 
                 render(); 
                 if(page !== 'admin') window.scrollTo(0,0); 
@@ -836,7 +821,7 @@
 
         function renderLogin() { return `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-deep);"><div style="background:var(--bg-card);padding:40px;border-radius:32px;width:360px;border:1px solid var(--border-subtle);"><h2 style="margin-bottom:20px;text-align:center;">Acceso Ejecutivo</h2><input id="adminUser" placeholder="Usuario" style="width:100%;padding:12px;margin-bottom:12px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-subtle);"><input id="adminPass" type="password" placeholder="Contraseña" style="width:100%;padding:12px;margin-bottom:20px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-subtle);"><button class="btn-gold-hero" style="width:100%;" onclick="doLogin()">Ingresar</button></div></div>`; }
 
-        // ========== LOGIN CORREGIDO ==========
+        // ========== LOGIN CORREGIDO (SOLO BACKEND) ==========
         async function doLogin() {
             const u = document.getElementById('adminUser')?.value.trim();
             const p = document.getElementById('adminPass')?.value.trim();
@@ -848,6 +833,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username: u, password: p })
                 });
+
                 if (response.ok) {
                     const data = await response.json();
                     authToken = data.token;
@@ -860,20 +846,20 @@
                     showToast('✅ Conectado al backend');
                 } else {
                     const errorData = await response.json().catch(() => ({}));
-                    showToast(`❌ ${errorData.message || 'Credenciales incorrectas'}`);
+                    showToast(`❌ ${errorData.message || 'Credenciales incorrectas'} (${response.status})`);
                 }
- } catch (networkError) {
-console.error(networkError);
-showToast('❌ No se pudo conectar al servidor');
-}
-}
+            } catch (networkError) {
+                showToast('❌ No se pudo conectar al servidor');
+            }
+        }
 
-function logoutAdmin() {
-    localStorage.removeItem('admin_token');
-    authToken = null;
-    isAdmin = false;
-    window.location.href = window.location.pathname;
-}
+        function logoutAdmin() {
+            localStorage.removeItem('admin_token');
+            authToken = null;
+            isAdmin = false;
+            window.location.href = window.location.pathname;
+        }
+
         function toggleWhatsappChat() { document.getElementById('whatsappChat').classList.toggle('open'); }
         function addWAMessage(text, sender) { const body = document.getElementById('whatsappBody'); if(!body) return; const div = document.createElement('div'); div.className = `chat-message ${sender}`; div.textContent = text; body.appendChild(div); body.scrollTop = body.scrollHeight; }
         function sendWhatsappMessage() {
@@ -1069,7 +1055,6 @@ function logoutAdmin() {
                     activeDrawer.drawer.remove();
                     activeDrawer = null;
                     document.body.style.overflow = '';
-                    // LIMPIAR ESTADO para evitar mezcla de imágenes entre propiedades
                     currentEditProperty = null;
                     pendingImagesArray = [];
                 }, 300);
@@ -1398,7 +1383,6 @@ function logoutAdmin() {
                 }
                 saveData();
 
-                // Cargar datos del backend si hay token de administrador, pero sin sobrescribir si vienen vacíos
                 if (authToken) {
                     try {
                         const [devs, props, lds] = await Promise.all([
@@ -1410,12 +1394,8 @@ function logoutAdmin() {
                             developmentsData = devs;
                             saveDevelopments();
                         }
-                        if (Array.isArray(props) && props.length > 0) {
-                            properties = props;
-                        }
-                        if (Array.isArray(lds) && lds.length > 0) {
-                            leads = lds;
-                        }
+                        if (Array.isArray(props) && props.length > 0) properties = props;
+                        if (Array.isArray(lds) && lds.length > 0) leads = lds;
                         saveData();
                     } catch (e) { console.warn('Error cargando backend', e); }
                 }
